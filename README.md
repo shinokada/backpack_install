@@ -2,7 +2,7 @@
 
 ## Overview
 
-This script automates to install all Backpack for Laravel modules from your terminal.
+This script automates to install all [Backpack for Laravel modules](https://backpackforlaravel.com/docs/4.1/installation) from your terminal.
 
 Tested on macOS and it should work on Linux.
 
@@ -10,7 +10,7 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 
 ## Requirement
 
-- You must have Laravel installed and connected to a database. No data in the database.
+- You must have [Laravel](https://laravel.com/) installed and connected to a database. No data in the database.
 - sed
 
 ## Usage
