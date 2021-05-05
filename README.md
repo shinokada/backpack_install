@@ -31,16 +31,16 @@ Download or clone this repo.
 $ cd /path/to/backpack_install
 
 # Install all modules at once
-$ ./$script_name -a -d /path/to/laravel/project
+$ ./backpack_install -a -d /path/to/laravel/project
 
 # Install one by one
-$ ./$script_name -d /path/to/laravel/project
+$ ./backpack_install -d /path/to/laravel/project
 
 # get help
-$ ./$script_name -h
+$ ./backpack_install -h
 
 # get version
-$ ./$script_name -v
+$ ./backpack_install -v
 
 ```
 
