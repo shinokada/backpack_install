@@ -8,6 +8,8 @@ Tested on macOS and it should work on Linux.
 
 Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, and NewsCrud.
 
+![backpack_install demo](images/backpack_demo.gif)
+
 ## Requirement
 
 - You must have [Laravel](https://laravel.com/) installed and connected to a database. No data in the database.
