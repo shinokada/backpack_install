@@ -1,10 +1,10 @@
-# backpack_install for MacOS/Linux
+# Backpack Installer for macOS/Linux
 
 ## Overview
 
 This script automates to install all Backpack for Laravel modules from your terminal.
 
-Tested on MacOS and it should work on Linux.
+Tested on macOS and it should work on Linux.
 
 Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, and NewsCrud.
 
