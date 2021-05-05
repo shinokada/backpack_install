@@ -2,10 +2,11 @@
 
 ## Overview
 
-This script makes it easy to install all Backpack for Laravel modules:
-BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, and NewsCrud.
+This script automates to install all Backpack for Laravel modules from your terminal.
 
 Tested on MacOS and it should work on Linux.
+
+Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, and NewsCrud.
 
 ## Requirement
 
@@ -44,11 +45,11 @@ $ ./backpack_install -v
 
 ```
 
-[BackupManager optional](https://github.com/Laravel-Backpack/BackupManager#install), you need to configure them.
+## After installation
 
-[For PermissionManager](https://github.com/Laravel-Backpack/PermissionManager#install) to work, add the Spatie\Permission\Traits\HasRoles trait to your User model(s).
+- You need to configure [BackupManager optional](https://github.com/Laravel-Backpack/BackupManager#install).
 
-## Features
+- Add `Spatie\Permission\Traits\HasRoles` trait to your User model(s). See more on [For PermissionManager](https://github.com/Laravel-Backpack/PermissionManager#install).
 
 Exit error status:
 
@@ -63,6 +64,8 @@ Exit error status:
     10: Error on installing NewsCrud
     11: Error on install FileManager
 ```
+
+When you have an error. You can use `echo $?` to output the error code.
 
 ## Author
 
