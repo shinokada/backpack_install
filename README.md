@@ -52,7 +52,7 @@ $ ./$script_name -v
 
 Exit error status:
 
-```
+```terminal
     3:  Error on installing Backpack Core packages
     4:  Error on installing BackupManager
     5:  Error on installing LogManager
