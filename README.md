@@ -2,7 +2,7 @@
 
 ## Overview
 
-This script install all Backpack for Laravel modules:
+This script installs all Backpack for Laravel modules:
 BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, and NewsCrud.
 
 ## Requirement
@@ -39,6 +39,10 @@ $ ./$script_name -h
 $ ./$script_name -v
 
 ```
+
+[BackupManager optional](https://github.com/Laravel-Backpack/BackupManager#install), you need to configure them.
+
+[For PermissionManager](https://github.com/Laravel-Backpack/PermissionManager#install) to work, add the Spatie\Permission\Traits\HasRoles trait to your User model(s).
 
 ## Features
 

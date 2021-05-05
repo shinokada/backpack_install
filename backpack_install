@@ -162,22 +162,22 @@ check_dir() {
 # 1. Install Backpack Core packages
 # check if you have Backpack Core packages
 crud_ans=$(check_dir crud)
-
+echo ""
 if [[ "$crud_ans" = Y ]]; then
+    echo ""
     echo ">>>>> Installing CRUD."
-
+    echo ""
     echo '>>>>> CRUD: Running composer require backpack/crud:"4.1.*"'
     composer require backpack/crud:"4.1.*" || exit 3
-
+    echo ""
     echo '>>>>> CRUD: Running composer require backpack/generators --dev'
     composer require backpack/generators --dev || exit 3
-
+    echo ""
     echo '>>>>> CRUD: Running composer require laracasts/generators --dev'
     composer require laracasts/generators --dev || exit 3
-
+    echo ""
     echo '>>>>> CRUD: Running php artisan backpack:install'
     php artisan backpack:install || exit 3
-
     echo ""
     echo ">>>>> CRUD installed."
     echo ""
@@ -185,23 +185,23 @@ fi
 
 # 2. Install BackupManager
 backup_ans=$(check_dir backupmanager)
-
+echo ""
 if [[ "$backup_ans" = Y ]]; then
+    echo ""
     echo ">>>>> Installing BackupManager."
-
+    echo ""
     echo '>>>>> Running composer require backpack/backupmanager'
     composer require backpack/backupmanager || exit 4
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish'
     php artisan vendor:publish --provider="Backpack\BackupManager\BackupManagerServiceProvider" || exit 4
-
+    echo ""
     echo '>>>>> Running php artisan backpack:add-sidebar-content'
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('backup') }}'><i class='nav-icon la la-hdd-o'></i> Backups</a></li>" || exit 4
-
+    echo ""
     echo 'Adding backup to config/filesystems'
     # Add a new "disk" to config/filesystems.php:
     sed -i "/'disks'/r ${script_dir}/disk_backup.txt" ./config/filesystems.php
-
     echo ""
     echo ">>>>> BackupManager installed "
 fi
@@ -209,168 +209,182 @@ fi
 # 3. Install LogManager
 # If it is yes or parameter -y is given then install it else exit
 log_ans=$(check_dir logmanager)
-
+echo ""
 if [[ "$log_ans" = Y ]]; then
+    echo ""
     echo ">>>>> Installing LogManager."
+    echo ""
     echo '>>>>> Running composer require backpack/logmanager'
-
+    echo ""
     composer require backpack/logmanager || exit 5
-
+    echo ""
+    echo 'Adding storage to config/filesystems'
+    # Add a new "disk" to config/filesystems.php:
+    sed -i "/'disks'/r ${script_dir}/disk_logmanager.txt" ./config/filesystems.php || exit 5
+    echo ""
+    # add APP_LOG=daily to .env
+    echo 'Adding APP_LOG,daily to config/app.php.'
+    sed -i "/return/r ${script_dir}/config_app_log.txt" ./config/app.php || exit 5
+    echo ""
     echo '>>>>> Running php artisan backpack:add-sidebar-content'
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon la la-terminal'></i> Logs</a></li>" || exit 5
 
-    echo '>>>>> Replacing "channels" => ["single"]'
-    ORIGINAL_STRING="channels' => ['single'],"
-    NEW_STRING="channels' => ['daily'],"
-    FILENAME='config/logging.php'
-    sed -i "s/${ORIGINAL_STRING}/${NEW_STRING}/" $FILENAME || exit 5
-
+    # echo '>>>>> Replacing "channels" => ["single"]'
+    # ORIGINAL_STRING="channels' => ['single'],"
+    # NEW_STRING="channels' => ['daily'],"
+    # FILENAME='config/logging.php'
+    # sed -i "s/${ORIGINAL_STRING}/${NEW_STRING}/" $FILENAME || exit 5
     echo ""
     echo ">>>>> LogManager installed"
 fi
 
 # 4. Install Settings
 setting_ans=$(check_dir settings)
-
+echo ""
 if [[ "$setting_ans" = Y ]]; then
+    echo ""
     echo ">>>>> Installing Settings."
-
+    echo ""
     echo '>>>>> Running composer require backpack/settings'
     composer require backpack/settings || exit 6
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish --provider'
     php artisan vendor:publish --provider="Backpack\Settings\SettingsServiceProvider" || exit 6
-
+    echo ""
     echo '>>>>> Running php artisan migrate'
     php artisan migrate || exit 6
-
+    echo ""
     echo '>>>>> Running php artisan backpack:add-sidebar-content'
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('setting') }}'><i class='nav-icon la la-cog'></i> <span>Settings</span></a></li>" || exit 6
-
+    echo ""
     echo '>>>>> Running php artisan db:seed --class'
     php artisan db:seed --class="Backpack\Settings\database\seeds\SettingsTableSeeder" || exit 6
-
     echo ""
     echo "Settings installed"
 fi
 
 # 5. Install PageManager
 page_ans=$(check_dir pagemanager)
-
+echo ""
 if [[ "$page_ans" = Y ]]; then
+    echo ""
     echo ">>>>> Installing PageManager."
-
+    echo ""
     echo '>>>>> Adding app/PageTemplates.php'
     pagetemp=./app/PageTemplates.php
     if [[ ! -e $pagetemp ]]; then
         cp "$script_dir"/PageTemplates.php "$laravel_dir"/app
     fi
-
+    echo ""
     echo '>>>>> Running composer require backpack/pagemanager'
     composer require backpack/pagemanager || exit 7
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish --provider'
     php artisan vendor:publish --provider="Backpack\PageManager\PageManagerServiceProvider" || exit 7
-
+    echo ""
     echo '>>>>> Running php artisan migrate'
     php artisan migrate || exit 7
-
+    echo ""
     echo '>>>>> Running php artisan backpack:add-sidebar-content'
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('page') }}'><i class='nav-icon la la-file-o'></i> <span>Pages</span></a></li>" || exit 7
-
     echo ""
     echo '>>>>> PageManager installed'
 fi
 
 # 6. Install PermissionManager
 permission_ans=$(check_dir permissionmanager)
-
+echo ""
 if [[ "$permission_ans" = Y ]]; then
+    echo ""
     echo ">>>>> Installing PermissionManager."
-
+    echo ""
     echo '>>>>> Running composer require backpack/permissionmanager'
     composer require backpack/permissionmanager || exit 8
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish --provider'
     php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="migrations" || exit 8
-
+    echo ""
     echo '>>>>> Running php artisan migrate'
     php artisan migrate || exit 8
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish --provider'
     php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="config"
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish --provider'
     php artisan vendor:publish --provider="Backpack\PermissionManager\PermissionManagerServiceProvider" --tag="config" || exit 8
-
+    echo ""
     echo '>>>>> Running the migraions: '
     php artisan migrate || exit 8
-
+    echo ""
     echo '>>>>> Running php artisan backpack:add-sidebar-content'
     php artisan backpack:add-sidebar-content "<!-- Users, Roles, Permissions --><li class='nav-item nav-dropdown'><a class='nav-link nav-dropdown-toggle' href='#'><i class='nav-icon la la-users'></i> Authentication</a><ul class='nav-dropdown-items'><li class='nav-item'><a class='nav-link' href='{{ backpack_url('user') }}'><i class='nav-icon la la-user'></i> <span>Users</span></a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('role') }}'><i class='nav-icon la la-id-badge'></i> <span>Roles</span></a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('permission') }}'><i class='nav-icon la la-key'></i> <span>Permissions</span></a></li></ul></li>"
-
     echo ""
     echo '>>>>> PermissionManager installed.'
 fi
 # 7. Install MenuCrud
 menu_ans=$(check_dir menucrud)
-
+echo ""
 if [[ "$menu_ans" = Y ]]; then
     echo ">>>>> Installing MenuCRUD."
+    echo ""
     echo '>>>>> Running composer require backpack/menucrud'
     composer require backpack/menucrud || exit 9
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish --provider'
     php artisan vendor:publish --provider="Backpack\MenuCRUD\MenuCRUDServiceProvider" || exit 9
-
+    echo ""
     echo '>>>>> Running php artisan migrate'
     php artisan migrate || exit 9
-
+    echo ""
     echo '>>>>> Running php artisan backpack:add-sidebar-content'
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menu-item') }}'><i class='nav-icon la la-list'></i> <span>Menu</span></a></li>" || exit 9
-
     echo ""
     echo '>>>>> MenuCRUD installed.'
 fi
 
 # 8. Install NewsCrud
 news_ans=$(check_dir newscrud)
-
+echo ""
 if [[ "$news_ans" = Y ]]; then
     echo ">>>>> Installing NewsCRUD."
+    echo ""
     echo '>>>>> Running composer require backpack/newscrud'
+    echo ""
     composer require backpack/newscrud || exit 10
-
+    echo ""
     echo '>>>>> Running php artisan vendor:publish --provider'
     php artisan vendor:publish --provider="Backpack\NewsCRUD\NewsCRUDServiceProvider" || exit 10
-
+    echo ""
     echo '>>>>> Running php artisan migrate'
     php artisan migrate || exit 10
-
+    echo ""
     echo '>>>>> Running php artisan backpack:add-sidebar-content'
     php artisan backpack:add-sidebar-content "<li class='nav-item nav-dropdown'><a class='nav-link nav-dropdown-toggle' href='#'><i class='nav-icon la la-newspaper-o'></i>News</a><ul class='nav-dropdown-items'><li class='nav-item'><a class='nav-link' href='{{ backpack_url('article') }}'><i class='nav-icon la la-newspaper-o'></i> Articles</a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('category') }}'><i class='nav-icon la la-list'></i> Categories</a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('tag') }}'><i class='nav-icon la la-tag'></i> Tags</a></li></ul></li>" || exit 10
-
     echo ""
     echo '>>>>> NewsCRUD installed.'
 fi
 
 # 9. Install FileManager
 file_ans=$(check_dir filemanager)
-
+echo ""
 if [[ "$file_ans" = Y ]]; then
     echo ">>>>> Installing FileManager."
     echo '>>>>> Running composer require backpack/filemanager'
     composer require backpack/filemanager || exit 11
-
+    echo ""
     echo '>>>>> Running php artisan backpack:filemanager:install'
     php artisan backpack:filemanager:install || exit 11
-
     echo ""
     echo '>>>>> NewsCRUD installed.'
 fi
 
+echo ""
 echo "Installation completed."
+echo ""
 echo "BackupManager [optional]: You need to configure them."
+echo ""
 echo "For PermissionManager to work, add the Spatie\Permission\Traits\HasRoles trait to your User model(s)"
+echo ""
+echo ""
 echo "Happy Coding!"
 exit 0
