@@ -86,6 +86,12 @@ if [[ -z "${laravel_dir}" || ! -d "${laravel_dir}" ]]; then
     exit 1
 fi
 
+# check if you have sed
+if ! type sed &>/dev/null; then
+    echo "You need to install sed."
+    exit 1
+fi
+
 # cd to the project
 cd "$laravel_dir" || exit 1
 
