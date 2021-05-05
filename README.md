@@ -7,13 +7,15 @@ BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, a
 
 ## Requirement
 
-- You must have Laravel installed and connected to a database.
+- You must have Laravel installed and connected to a database. No data in the database.
 - sed
 
 ## Usage
 
+Download or clone this repo.
+
 ```terminal
-./backpack_install [ -a | -all ] [ -d path ]
+./backpack_install [ -a | -all ] [ -d /path/to/dir ]
     -d              path/to/project
     -a | --all      This will install all modules.
     -v | --version  Script version.
@@ -26,7 +28,7 @@ BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, a
 # cd to backpack_install
 $ cd /path/to/backpack_install
 
-# Install all modules
+# Install all modules at once
 $ ./$script_name -a -d /path/to/laravel/project
 
 # Install one by one
