@@ -15,7 +15,21 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 
 ## Usage
 
-Download or clone this repo.
+- Install laravel
+
+````terminal
+$ composer create-project laravel/laravel myproject
+``
+
+- Update .env file
+
+- Download or clone this repo.
+
+```terminal
+$ cd /path/to/backpack_install
+````
+
+- Options:
 
 ```terminal
 ./backpack_install [ -a | -all ] [ -d /path/to/dir ]
