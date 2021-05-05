@@ -88,7 +88,7 @@ When you have an error. You can use `echo $?` to output the error code.
 
 ## Troubleshooting
 
-You may need to `backpack_install` file executable.
+`backpack_install` file must be executable.
 
 ```teminal
 $ chmod u+x backpack_install
