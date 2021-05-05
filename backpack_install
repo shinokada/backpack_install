@@ -7,7 +7,7 @@
 ###########################
 
 # set defaults
-version="v0.2.0"
+version="v0.3.0"
 script_name=$(basename "$0")
 all=""
 script_dir=$(pwd)
@@ -200,25 +200,11 @@ if [[ "$backup_ans" = Y ]]; then
 
     echo 'Adding backup to config/filesystems'
     # Add a new "disk" to config/filesystems.php:
-    cat <<EOF | sed -i "/^'disks'/ r /dev/stdin" config/filesystems.php || exit 4
-// used for Backpack/BackupManager
-        'backups' => [
-            'driver' => 'local',
-            'root'   => storage_path('backups'), // that's where your backups are stored by default: storage/backups
-        ],
-EOF
+    sed -i "/'disks'/r ${script_dir}/disk_backup.txt" ./config/filesystems.php
+
     echo ""
     echo ">>>>> BackupManager installed "
 fi
-
-# Add backup schedule
-# // app/Console/Kernel.php
-
-# protected function schedule(Schedule $schedule)
-# {
-#    $schedule->command('backup:clean')->daily()->at('04:00');
-#    $schedule->command('backup:run')->daily()->at('05:00');
-# }
 
 # 3. Install LogManager
 # If it is yes or parameter -y is given then install it else exit
@@ -384,6 +370,7 @@ if [[ "$file_ans" = Y ]]; then
 fi
 
 echo "Installation completed."
+echo "BackupManager [optional]: You need to configure them."
 echo "For PermissionManager to work, add the Spatie\Permission\Traits\HasRoles trait to your User model(s)"
 echo "Happy Coding!"
 exit 0
