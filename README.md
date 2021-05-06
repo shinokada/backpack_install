@@ -19,9 +19,9 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 
 - Install laravel
 
-````terminal
+```terminal
 $ composer create-project laravel/laravel myproject
-``
+```
 
 - Update .env file
 - Start Laravel
@@ -34,7 +34,7 @@ $ php artisan serve
 
 ```terminal
 $ cd /path/to/backpack_install
-````
+```
 
 - Options:
 
@@ -63,7 +63,6 @@ $ ./backpack_install -h
 
 # get version
 $ ./backpack_install -v
-
 ```
 
 ## After installation
