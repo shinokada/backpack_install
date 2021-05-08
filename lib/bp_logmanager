@@ -18,7 +18,7 @@ fn_logmanager() {
     echo
     # add APP_LOG=daily to .env
     bannerColor 'Adding APP_LOG,daily to config/app.php.' "blue" "*"
-    sed -i "/return/r ${script_dir}/config_app_log.txt" ./config/app.php || exit 4
+    sed -i "/return/r ${script_dir}/bp_files/config_app_log.txt" ./config/app.php || exit 4
     echo
     bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon la la-terminal'></i> Logs</a></li>" || exit 4

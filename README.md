@@ -74,22 +74,11 @@ When you have an error. You can use `echo $?` to output the error code.
 
 ## Troubleshooting
 
-`backpack_install` file must be executable.
+`backpack_install` files must be executable.
 
 ```teminal
 $ chmod u+x backpack_install
-$ ls -al
-drwxr-xr-x 11 shinokada staff   352 May  5 19:36 .
-drwxr-xr-x  4 shinokada staff   128 May  5 07:48 ..
-drwxr-xr-x 13 shinokada staff   416 May  6 08:04 .git
--rw-r--r--  1 shinokada staff  2833 May  5 08:49 PageTemplates.php
--rw-r--r--  1 shinokada staff  2147 May  6 08:05 README.md
--rwxr--r--  1 shinokada staff 14297 May  5 20:50 backpack_install
--rw-r--r--  1 shinokada staff    39 May  5 20:29 config_app_log.txt
--rw-r--r--  1 shinokada staff   237 May  5 17:38 disk_backup.txt
--rw-r--r--  1 shinokada staff   146 May  5 19:20 disk_logmanager.txt
--rw-r--r--  1 shinokada staff  1070 May  5 07:48 license.txt
--rw-r--r--  1 shinokada staff  1284 May  5 20:44 sidebar_menus.txt
+$ chmod -R u+x lib
 ```
 
 ## Author
