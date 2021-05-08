@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+fn_backupmanager() {
+
+    cd "$1" || exit 1
+    script_dir="$2"
+
+    echo
+    echo ">>>>> Installing BackupManager."
+    echo
+    echo '>>>>> Running composer require backpack/backupmanager'
+    composer require backpack/backupmanager || exit 4
+    echo
+    echo '>>>>> Running php artisan vendor:publish'
+    php artisan vendor:publish --provider="Backpack\BackupManager\BackupManagerServiceProvider" || exit 4
+    echo
+    echo '>>>>> Running php artisan backpack:add-sidebar-content'
+    php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('backup') }}'><i class='nav-icon la la-hdd-o'></i> Backups</a></li>" || exit 4
+    echo
+    echo 'Adding backup to config/filesystems'
+    # Add a new "disk" to config/filesystems.php:
+    sed -i "/'disks'/r ${script_dir}/disk_backup.txt" ./config/filesystems.php
+    echo
+    echo ">>>>> BackupManager installed "
+}

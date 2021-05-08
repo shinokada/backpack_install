@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+fn_pagemanager() {
+
+    cd "$1" || exit 1
+    script_dir="$2"
+
+    echo
+    echo ">>>>> Installing PageManager."
+    echo
+    echo '>>>>> Adding app/PageTemplates.php'
+    pagetemp=./app/PageTemplates.php
+    if [[ ! -e $pagetemp ]]; then
+        cp "$script_dir"/PageTemplates.php "$laravel_dir"/app
+    fi
+    echo
+    echo '>>>>> Running composer require backpack/pagemanager'
+    composer require backpack/pagemanager || exit 4
+    echo
+    echo '>>>>> Running php artisan vendor:publish --provider'
+    php artisan vendor:publish --provider="Backpack\PageManager\PageManagerServiceProvider" || exit 4
+    echo
+    echo '>>>>> Running php artisan migrate'
+    php artisan migrate || exit 4
+    echo
+    echo '>>>>> Running php artisan backpack:add-sidebar-content'
+    php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('page') }}'><i class='nav-icon la la-file-o'></i> <span>Pages</span></a></li>" || exit 4
+    echo
+    echo '>>>>> PageManager installed'
+}

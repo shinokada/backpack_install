@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+fn_filemanager() {
+
+    cd "$1" || exit 1
+
+    echo ">>>>> Installing FileManager."
+    echo '>>>>> Running composer require backpack/filemanager'
+    composer require backpack/filemanager || exit 4
+    echo
+    echo '>>>>> Running php artisan backpack:filemanager:install'
+    php artisan backpack:filemanager:install || exit 4
+    echo
+    echo '>>>>> NewsCRUD installed.'
+}

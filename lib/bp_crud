@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+fn_crud() {
+    echo "$0"
+    echo "$1"
+    echo "$2"
+    cd "$1" || exit 1
+    echo
+    echo ">>>>> Installing CRUD."
+    echo
+    echo '>>>>> CRUD: Running composer require backpack/crud:"4.1.*"'
+    composer require backpack/crud:"4.1.*" || exit 4
+    echo
+    echo '>>>>> CRUD: Running composer require backpack/generators --dev'
+    composer require backpack/generators --dev || exit 4
+    echo
+    echo '>>>>> CRUD: Running composer require laracasts/generators --dev'
+    composer require laracasts/generators --dev || exit 4
+    echo
+    echo '>>>>> CRUD: Running php artisan backpack:install'
+    /usr/bin/php artisan backpack:install || exit 4
+    echo
+    echo ">>>>> CRUD installed."
+    echo
+}

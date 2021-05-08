@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+fn_logmanager() {
+
+    cd "$1" || exit 1
+    script_dir="$2"
+
+    echo
+    echo ">>>>> Installing LogManager."
+    echo
+    echo '>>>>> Running composer require backpack/logmanager'
+    echo
+    composer require backpack/logmanager || exit 4
+    echo
+    echo 'Adding storage to config/filesystems'
+    # Add a new "disk" to config/filesystems.php:
+    sed -i "/'disks'/r ${script_dir}/disk_logmanager.txt" ./config/filesystems.php || exit 4
+    echo
+    # add APP_LOG=daily to .env
+    echo 'Adding APP_LOG,daily to config/app.php.'
+    sed -i "/return/r ${script_dir}/config_app_log.txt" ./config/app.php || exit 4
+    echo
+    echo '>>>>> Running php artisan backpack:add-sidebar-content'
+    php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon la la-terminal'></i> Logs</a></li>" || exit 4
+
+    # echo '>>>>> Replacing "channels" => ["single"]'
+    # ORIGINAL_STRING="channels' => ['single'],"
+    # NEW_STRING="channels' => ['daily'],"
+    # FILENAME='config/logging.php'
+    # sed -i "s/${ORIGINAL_STRING}/${NEW_STRING}/" $FILENAME || exit 4
+    echo
+    echo ">>>>> LogManager installed"
+}

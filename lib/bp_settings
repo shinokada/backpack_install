@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+fn_settings() {
+
+    cd "$1" || exit 1
+
+    echo
+    echo ">>>>> Installing Settings."
+    echo
+    echo '>>>>> Running composer require backpack/settings'
+    composer require backpack/settings || exit 4
+    echo
+    echo '>>>>> Running php artisan vendor:publish --provider'
+    php artisan vendor:publish --provider="Backpack\Settings\SettingsServiceProvider" || exit 4
+    echo
+    echo '>>>>> Running php artisan migrate'
+    php artisan migrate || exit 4
+    echo
+    echo '>>>>> Running php artisan backpack:add-sidebar-content'
+    php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('setting') }}'><i class='nav-icon la la-cog'></i> <span>Settings</span></a></li>" || exit 4
+    echo
+    echo '>>>>> Running php artisan db:seed --class'
+    php artisan db:seed --class="Backpack\Settings\database\seeds\SettingsTableSeeder" || exit 4
+    echo
+    echo "Settings installed"
+}
