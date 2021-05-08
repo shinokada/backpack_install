@@ -37,27 +37,19 @@ $ php artisan serve
 $ cd /path/to/backpack_install
 ```
 
-5. Options:
+Then run one of following commands.
+
+### Examples
 
 ```terminal
-./backpack_install [ -a | -all ] [ -d /path/to/dir ]
-    -d              path/to/project
-    -a | --all      This will install all modules.
-    -v | --version  Script version.
-    -h | --help     Show help.
-```
-
-## Examples
-
-```terminal
-# cd to backpack_install
-$ cd /path/to/backpack_install
-
 # Install all modules at once
 $ ./backpack_install -a -d /path/to/laravel/project
 
 # Install one by one
 $ ./backpack_install -d /path/to/laravel/project
+
+Uninstall all modules
+$ ./$script_name -u -d /path/to/laravel/project
 
 # get help
 $ ./backpack_install -h
