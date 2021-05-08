@@ -24,7 +24,6 @@ on_ctrl_c() {
     tput cnorm # show cursor. You need this if animation is used.
     echo "Terminated with Ctrl+C."
     echo "Removing backpack modules ..."
-    composer remove backpack/crud
     composer remove backpack/backupmanager
     composer remove backpack/logmanager
     composer remove backpack/settings
@@ -33,6 +32,7 @@ on_ctrl_c() {
     composer remove backpack/menucrud
     composer remove backpack/newscrud
     composer remove backpack/filemanager
+    bannerColor "Please remove backpack/crud and backpack/generators manually." "yellow" "*"
     exit 1 # Don't remove. Use a number (1-255) for error code.
 }
 
@@ -227,7 +227,7 @@ check_dir() {
 
 # check if .env file has DB_PASSWORD
 
-echo "$laravel_dir"
+# echo "$laravel_dir"
 # 1. Install Backpack Core packages
 
 crud_ans=$(check_dir crud)
@@ -262,7 +262,7 @@ fi
 # 6. Install PermissionManager
 permission_ans=$(check_dir permissionmanager "$laravel_dir" "$script_dir")
 if [[ "$permission_ans" = Y ]]; then
-    fn_permissionmanager "$laravel_dir"
+    fn_permissionmanager "$laravel_dir" "$script_dir"
 fi
 
 # 7. Install MenuCrud
@@ -285,11 +285,6 @@ fi
 
 echo
 bannerColor "Installation completed." "blue" "*"
-echo
-bannerColor "You need to configure BackupManager [optional]." "cyan" "*"
-echo
-bannerColor "For PermissionManager to work, add the Spatie\Permission\Traits\HasRoles trait to your User model(s)" "cyan" "*"
-echo
 echo
 bannerColor "Happy Coding!" "magenta" "*"
 exit 0
