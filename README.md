@@ -75,15 +75,7 @@ $ ./backpack_install -v
 Exit error status:
 
 ```terminal
-    3:  Error on installing Backpack Core packages
-    4:  Error on installing BackupManager
-    5:  Error on installing LogManager
-    6:  Error on installing Settings
-    7:  Error on installing PageManager
-    8:  Error on installing PermissionManager
-    9:  Error on installing MenuCrud
-    10: Error on installing NewsCrud
-    11: Error on install FileManager
+    4:  Error
 ```
 
 When you have an error. You can use `echo $?` to output the error code.
