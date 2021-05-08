@@ -115,3 +115,13 @@ Shinichi Okada
 ## Licence
 
 Please see license.txt.
+
+## How to revert your project
+
+```terminal
+$ cd /path/to/laravel
+$ git reset --hard
+$ git clean -f -d
+```
+
+Clean the database.
