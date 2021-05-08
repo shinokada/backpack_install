@@ -8,7 +8,7 @@
 
 # >>>>>>>> default variables >>>>>>>>>>
 # set defaults
-version="v0.4.0"
+version="v0.5.0"
 script_name=$(basename "$0")
 all=""
 script_dir=$(pwd)
@@ -36,7 +36,7 @@ You must have Laravel installed and connected to a database.
 
 Usage:
 ======
-./$script_name [ -a | -all ] [ -d path ] 
+./$script_name [ -a | -all ] [ -d path | --dir path] [ -u | --uninstall ] [ -v | --version ] [ -h | --help ] 
     -d | --dir       Absolute path to Laravel project.          
     -a | --all       This will install all modules.
     -u | --uninstall Uninstall all modules.
