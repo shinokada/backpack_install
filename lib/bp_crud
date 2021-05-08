@@ -17,7 +17,7 @@ fn_crud() {
     composer require laracasts/generators --dev || exit 4
     echo
     bannerColor 'CRUD: Running php artisan backpack:install' "blue" "*"
-    /usr/bin/php artisan backpack:install || exit 4
+    php artisan backpack:install || exit 4
     echo
     bannerColor 'CRUD installed.' "blue" "*"
 }

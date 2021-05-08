@@ -14,7 +14,7 @@ fn_logmanager() {
     echo
     bannerColor 'Adding storage to config/filesystems' "blue" "*"
     # Add a new "disk" to config/filesystems.php:
-    sed -i "/'disks'/r ${script_dir}/disk_logmanager.txt" ./config/filesystems.php || exit 4
+    sed -i "/'disks'/r ${script_dir}/bp_files/disk_logmanager.txt" ./config/filesystems.php || exit 4
     echo
     # add APP_LOG=daily to .env
     bannerColor 'Adding APP_LOG,daily to config/app.php.' "blue" "*"

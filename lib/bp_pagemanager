@@ -13,7 +13,7 @@ fn_pagemanager() {
     bannerColor 'Adding app/PageTemplates.php' "blue" "*"
     pagetemp=./app/PageTemplates.php
     if [[ ! -e $pagetemp ]]; then
-        cp "$script_dir"/PageTemplates.php "$laravel_dir"/app
+        cp "$script_dir"/bp_files/PageTemplates.php "$laravel_dir"/app
     fi
     echo
     bannerColor 'Running composer require backpack/pagemanager' "blue" "*"
