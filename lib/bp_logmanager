@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
+source ./lib/banners
+
 fn_logmanager() {
 
-    source lib/banners
     laravel_dir=$1
     script_dir=$2
     cd "${laravel_dir}" || exit 1
 
     echo
     bannerColor "Installing LogManager." "blue" "*"
-    echo
     bannerColor 'Running composer require backpack/logmanager' "blue" "*"
-    echo
     composer require backpack/logmanager || exit 4
     echo
     bannerColor 'Adding storage to config/filesystems' "blue" "*"

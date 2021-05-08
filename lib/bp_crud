@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-fn_crud() {
+source ./lib/banners
 
-    source lib/banners
+fn_crud() {
     laravel_dir=${1}
     cd "${laravel_dir}" || exit 1
     echo
     bannerColor 'Installing CRUD.' "blue" "*"
-    echo
     bannerColor 'CRUD: Running composer require backpack/crud:"4.1.*"' "blue" "*"
     composer require backpack/crud:"4.1.*" || exit 4
     echo
@@ -21,5 +20,4 @@ fn_crud() {
     /usr/bin/php artisan backpack:install || exit 4
     echo
     bannerColor 'CRUD installed.' "blue" "*"
-    echo
 }

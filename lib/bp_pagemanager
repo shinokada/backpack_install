@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+source ./lib/banners
+
 fn_pagemanager() {
 
-    source lib/banners
     laravel_dir=$1
     script_dir=$2
     cd "${laravel_dir}" || exit 1

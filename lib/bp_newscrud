@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+source ./lib/banners
+
 fn_newscrud() {
 
-    source lib/banners
     laravel_dir=$1
     cd "${laravel_dir}" || exit 1
 

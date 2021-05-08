@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
+
+source ./lib/banners
+
 fn_backupmanager() {
 
-    source lib/banners
     laravel_dir=$1
     script_dir=$2
     cd "${laravel_dir}" || exit 1
 
     echo
     bannerColor "Installing BackupManager." "blue" "*"
-    echo
     bannerColor 'Running composer require backpack/backupmanager' "blue" "*"
     composer require backpack/backupmanager || exit 4
     echo

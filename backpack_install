@@ -141,13 +141,13 @@ import "bp_filemanager"
 
 # if $laravel_dir is empty or doesn't exist. Exit with warning.
 if [[ -z "${laravel_dir}" || ! -d "${laravel_dir}" ]]; then
-    echo "You need to provide path to your Laravel project"
+    bannerColor "You need to provide path to your Laravel project" "red" "*"
     exit 1
 fi
 
 # check if you have sed
 if ! type sed &>/dev/null; then
-    echo "You need to install sed."
+    bannerColor "Please install sed." "red" "*"
     exit 1
 fi
 
@@ -156,7 +156,7 @@ cd "$laravel_dir" || exit 1
 
 # check if /vendor/laravel/framework/src/Illuminate
 if [[ ! -d "$illuminate_dir" ]]; then
-    echo "You need to install Laravel."
+    bannerColor "Please install Laravel." "red" "*"
     exit 1
 fi
 
@@ -166,7 +166,7 @@ read -rp "Have you updated .env file, like APP_URL, etc? yes/y or no/n   " ENV
 env_ans=$(echo "$ENV" | cut -c 1-1 | tr "[:lower:]" "[:upper:]")
 
 if [ ! "$env_ans" = Y ]; then
-    echo "Update your .env file."
+    bannerColor "Update your .env file." "red" "*"
     exit 1
 fi
 # Confirm you are connected to DB and Laravel is running
@@ -175,7 +175,7 @@ read -rp "Are you connected to DB and Laravel is running? y or n   " RUNNING
 run_ans=$(echo "$RUNNING" | cut -c 1-1 | tr "[:lower:]" "[:upper:]")
 
 if [ ! "$run_ans" = Y ]; then
-    echo "You need to connect to DB and run Laravel."
+    bannerColor "You need to connect to DB and run Laravel." "red" "*"
     exit 1
 fi
 
@@ -281,12 +281,12 @@ if [[ "$file_ans" = Y ]]; then
 fi
 
 echo
-echo "Installation completed."
+bannerColor "Installation completed." "blue" "*"
 echo
-echo "BackupManager [optional]: You need to configure them."
+bannerColor "You need to configure BackupManager [optional]." "cyan" "*"
 echo
-echo "For PermissionManager to work, add the Spatie\Permission\Traits\HasRoles trait to your User model(s)"
+bannerColor "For PermissionManager to work, add the Spatie\Permission\Traits\HasRoles trait to your User model(s)" "cyan" "*"
 echo
 echo
-echo "Happy Coding!"
+bannerColor "Happy Coding!" "magenta" "*"
 exit 0

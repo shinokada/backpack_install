@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
+source ./lib/banners
+
 fn_settings() {
 
-    source lib/banners
     laravel_dir=$1
     cd "${laravel_dir}" || exit 1
 
     echo
     bannerColor "Installing Settings." "blue" "*"
-    echo
     bannerColor 'Running composer require backpack/settings' "blue" "*"
     composer require backpack/settings || exit 4
     echo
