@@ -1,25 +1,27 @@
 #!/usr/bin/env bash
 fn_settings() {
 
-    cd "$1" || exit 1
+    source lib/banners
+    laravel_dir=$1
+    cd "${laravel_dir}" || exit 1
 
     echo
-    echo ">>>>> Installing Settings."
+    bannerColor "Installing Settings." "blue" "*"
     echo
-    echo '>>>>> Running composer require backpack/settings'
+    bannerColor 'Running composer require backpack/settings' "blue" "*"
     composer require backpack/settings || exit 4
     echo
-    echo '>>>>> Running php artisan vendor:publish --provider'
+    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Backpack\Settings\SettingsServiceProvider" || exit 4
     echo
-    echo '>>>>> Running php artisan migrate'
+    bannerColor 'Running php artisan migrate' "blue" "*"
     php artisan migrate || exit 4
     echo
-    echo '>>>>> Running php artisan backpack:add-sidebar-content'
+    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('setting') }}'><i class='nav-icon la la-cog'></i> <span>Settings</span></a></li>" || exit 4
     echo
-    echo '>>>>> Running php artisan db:seed --class'
+    bannerColor 'Running php artisan db:seed --class' "blue" "*"
     php artisan db:seed --class="Backpack\Settings\database\seeds\SettingsTableSeeder" || exit 4
     echo
-    echo "Settings installed"
+    bannerColor "Settings installed" "blue" "*"
 }

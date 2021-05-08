@@ -1,31 +1,33 @@
 #!/usr/bin/env bash
 fn_permissionmanager() {
 
-    cd "$1" || exit 1
+    source lib/banners
+    laravel_dir=$1
+    cd "${laravel_dir}" || exit 1
 
     echo
-    echo ">>>>> Installing PermissionManager."
+    bannerColor "Installing PermissionManager." "blue" "*"
     echo
-    echo '>>>>> Running composer require backpack/permissionmanager'
+    bannerColor 'Running composer require backpack/permissionmanager' "blue" "*"
     composer require backpack/permissionmanager || exit 4
     echo
-    echo '>>>>> Running php artisan vendor:publish --provider'
+    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="migrations" || exit 4
     echo
-    echo '>>>>> Running php artisan migrate'
+    bannerColor 'Running php artisan migrate' "blue" "*"
     php artisan migrate || exit 4
     echo
-    echo '>>>>> Running php artisan vendor:publish --provider'
+    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="config"
     echo
-    echo '>>>>> Running php artisan vendor:publish --provider'
+    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Backpack\PermissionManager\PermissionManagerServiceProvider" --tag="config" || exit 4
     echo
-    echo '>>>>> Running the migraions: '
+    bannerColor 'Running the migraions: ' "blue" "*"
     php artisan migrate || exit 4
     echo
-    echo '>>>>> Running php artisan backpack:add-sidebar-content'
+    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<!-- Users, Roles, Permissions --><li class='nav-item nav-dropdown'><a class='nav-link nav-dropdown-toggle' href='#'><i class='nav-icon la la-users'></i> Authentication</a><ul class='nav-dropdown-items'><li class='nav-item'><a class='nav-link' href='{{ backpack_url('user') }}'><i class='nav-icon la la-user'></i> <span>Users</span></a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('role') }}'><i class='nav-icon la la-id-badge'></i> <span>Roles</span></a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('permission') }}'><i class='nav-icon la la-key'></i> <span>Permissions</span></a></li></ul></li>"
     echo
-    echo '>>>>> PermissionManager installed.'
+    bannerColor 'PermissionManager installed.' "blue" "*"
 }

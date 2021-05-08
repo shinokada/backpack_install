@@ -197,7 +197,7 @@ fi
 ##########################
 check_dir() {
     PACKAGE=""
-    cd "$laravel_dir" "$script_dir" || exit
+    cd "$laravel_dir" || exit
     local dir_to_check=$vendor_dir/$1
     while [[ -z "$PACKAGE" ]]; do
         if [[ "${all}" = "true" ]]; then

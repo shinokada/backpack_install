@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 fn_filemanager() {
 
-    cd "$1" || exit 1
+    source lib/banners
+    laravel_dir=$1
+    cd "${laravel_dir}" || exit 1
 
-    echo ">>>>> Installing FileManager."
-    echo '>>>>> Running composer require backpack/filemanager'
+    bannerColor "Installing FileManager." "blue" "*"
+    bannerColor 'Running composer require backpack/filemanager' "blue" "*"
     composer require backpack/filemanager || exit 4
     echo
-    echo '>>>>> Running php artisan backpack:filemanager:install'
+    bannerColor 'Running php artisan backpack:filemanager:install' "blue" "*"
     php artisan backpack:filemanager:install || exit 4
     echo
-    echo '>>>>> NewsCRUD installed.'
+    bannerColor 'NewsCRUD installed.' "blue" "*"
 }
