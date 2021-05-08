@@ -88,23 +88,30 @@ You must have Laravel installed and connected to a database.
 Usage:
 ======
 ./$script_name [ -a | -all ] [ -d path ] 
-    -d | --dir      Absolute path to Laravel project.          
-    -a | --all      This will install all modules.
-    -v | --version  Script version.
-    -h | --help     Show help.
+    -d | --dir       Absolute path to Laravel project.          
+    -a | --all       This will install all modules.
+    -u | --uninstall Uninstall all modules.
+    -v | --version   Script version.
+    -h | --help      Show help.
 
 Examples:
 =========
     cd to $script_name directory
     $ cd /path/to/$script_name
 
-    Then install all modules
+    Install all modules
     $ ./$script_name -a -d /path/to/laravel/project
 
-    Or get help
+    Install modules one by one
+    $ ./$script_name -d /path/to/laravel/project
+
+    Uninstall all modules
+    $ ./$script_name -u -d /path/to/laravel/project
+
+    Get help
     $ ./$script_name -h
 
-    Or get version
+    Get version
     $ ./$script_name -v
 
 Exit error status:
