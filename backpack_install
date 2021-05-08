@@ -17,31 +17,6 @@ vendor_dir="./vendor/backpack"
 illuminate_dir="./vendor/laravel/framework/src/Illuminate"
 # <<<<<<<< default variables <<<<<<<<<<
 
-# >>>>>>> event functions >>>>>>>>>>>
-# CTRL+C event handler
-on_ctrl_c() {
-    echo       # Set cursor to the next line of '^C'
-    tput cnorm # show cursor. You need this if animation is used.
-    echo "Terminated with Ctrl+C."
-    echo "Removing backpack modules ..."
-    composer remove backpack/backupmanager
-    composer remove backpack/logmanager
-    composer remove backpack/settings
-    composer remove backpack/permissionmanager
-    composer remove backpack/pagemanager
-    composer remove backpack/menucrud
-    composer remove backpack/newscrud
-    composer remove backpack/filemanager
-    bannerColor "Please remove backpack/crud and backpack/generators manually." "yellow" "*"
-    exit 1 # Don't remove. Use a number (1-255) for error code.
-}
-
-# Put this line at the beginning of your script (after functions used by event handlers).
-# Register CTRL+C event handler
-trap on_ctrl_c SIGINT ERR
-
-# <<<<<<< event functions <<<<<<<<<<<
-
 # >>>>>>>> functions >>>>>>>>>>>>>>>>>
 usage() {
     cat <<EOF
@@ -64,6 +39,7 @@ You must have Laravel installed and connected to a database.
 Usage:
 ======
 ./$script_name [ -a | -all ] [ -d path ] 
+    -d | --dir      Absolute path to Laravel project.          
     -a | --all      This will install all modules.
     -v | --version  Script version.
     -h | --help     Show help.
@@ -71,7 +47,7 @@ Usage:
 Examples:
 =========
     cd to $script_name directory
-    $ cd path/to/$script_name
+    $ cd /path/to/$script_name
 
     Then install all modules
     $ ./$script_name -a -d /path/to/laravel/project
@@ -90,6 +66,13 @@ EOF
     exit 2
 }
 
+check_cmd() {
+    if [[ ! $(command -v "$1") ]]; then
+        bannerColor "It seems like you don't have $1." "red" "*"
+        bannerColor "Please install $1 or add the PATH to .zshrc or .bash_profile." "red" "*"
+        exit 1
+    fi
+}
 # <<<<<<<< functions <<<<<<<<<<<<<<<<<
 
 # >>>>>>>> argument >>>>>>>>>>>>>>>>>>
@@ -116,6 +99,32 @@ while (($# > 0)); do
 done
 # <<<<<<<< argument <<<<<<<<<<<<<<<<<<
 
+# >>>>>>> event functions >>>>>>>>>>>
+# CTRL+C event handler
+on_ctrl_c() {
+    echo       # Set cursor to the next line of '^C'
+    tput cnorm # show cursor. You need this if animation is used.
+    echo "Terminated with Ctrl+C."
+    echo "Removing backpack modules ..."
+    cd "$laravel_dir" || exit 1
+    composer remove backpack/backupmanager
+    composer remove backpack/logmanager
+    composer remove backpack/settings
+    composer remove backpack/permissionmanager
+    composer remove backpack/pagemanager
+    composer remove backpack/menucrud
+    composer remove backpack/newscrud
+    composer remove backpack/filemanager
+    bannerColor "Please remove backpack/crud and backpack/generators manually." "yellow" "*"
+    exit 1 # Don't remove. Use a number (1-255) for error code.
+}
+
+# Put this line at the beginning of your script (after functions used by event handlers).
+# Register CTRL+C event handler
+trap on_ctrl_c SIGINT ERR
+
+# <<<<<<< event functions <<<<<<<<<<<
+
 # >>>>>>>> main >>>>>>>>>>>>>>>>>>>>>>>>
 # Usage: import "mylib"
 function import() {
@@ -141,18 +150,22 @@ import "bp_filemanager"
 
 # if $laravel_dir is empty or doesn't exist. Exit with warning.
 if [[ -z "${laravel_dir}" || ! -d "${laravel_dir}" ]]; then
-    bannerColor "You need to provide path to your Laravel project" "red" "*"
+    bannerColor "You need to provide a correct path to your Laravel project" "red" "*"
     exit 1
 fi
 
-# check if you have sed
-if ! type sed &>/dev/null; then
-    bannerColor "Please install sed." "red" "*"
-    exit 1
-fi
+# if ! type sed &>/dev/null; then
+#     bannerColor "Please install sed." "red" "*"
+#     exit 1
+# fi
 
 # cd to the project
 cd "$laravel_dir" || exit 1
+
+# check commands
+check_cmd sed
+check_cmd composer
+check_cmd laravel
 
 # check if /vendor/laravel/framework/src/Illuminate
 if [[ ! -d "$illuminate_dir" ]]; then
