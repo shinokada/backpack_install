@@ -146,9 +146,10 @@ uninstall_bp() {
     echo "" >"$laravel_dir"/storage/logs/laravel.log
     bannerColor "Please run the following commands for complete uninstallation." "yellow" "*"
     echo "$ cd $laravel_dir"
-    echo "$ git reset --"
+    echo "$ git reset --hard"
     echo "$ git clean -f -d"
     echo "$ rm -rf vendor/backpack"
+    bannerColor "Then clear your database." "yellow" "*"
     exit 0
 }
 
