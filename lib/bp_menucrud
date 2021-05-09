@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_menucrud() {
@@ -6,19 +8,19 @@ fn_menucrud() {
     laravel_dir=$1
     cd "${laravel_dir}" || exit 1
 
-    bannerColor "Installing MenuCRUD." "blue" "*"
+    bannerColor "MENUCRUD: Installing MenuCRUD." "blue" "*"
     echo
-    bannerColor 'Running composer require backpack/menucrud' "blue" "*"
+    bannerColor 'MENUCRUD: Running composer require backpack/menucrud' "blue" "*"
     composer require backpack/menucrud || exit 4
     echo
-    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
+    bannerColor 'MENUCRUD: Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Backpack\MenuCRUD\MenuCRUDServiceProvider" || exit 4
     echo
-    bannerColor 'Running php artisan migrate' "blue" "*"
+    bannerColor 'MENUCRUD: Running php artisan migrate' "blue" "*"
     php artisan migrate || exit 4
     echo
-    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
+    bannerColor 'MENUCRUD: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menu-item') }}'><i class='nav-icon la la-list'></i> <span>Menu</span></a></li>" || exit 4
     echo
-    bannerColor 'MenuCRUD installed.' "blue" "*"
+    bannerColor 'MENUCRUD: MenuCRUD installed.' "blue" "*"
 }

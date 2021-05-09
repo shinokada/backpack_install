@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_backupmanager() {
@@ -9,19 +10,19 @@ fn_backupmanager() {
     cd "${laravel_dir}" || exit 1
 
     echo
-    bannerColor "Installing BackupManager." "blue" "*"
-    bannerColor 'Running composer require backpack/backupmanager' "blue" "*"
+    bannerColor "BACKUPMANAGER: Installing BackupManager." "blue" "*"
+    bannerColor 'BACKUPMANAGER: Running composer require backpack/backupmanager' "blue" "*"
     composer require backpack/backupmanager || exit 4
     echo
-    bannerColor 'Running php artisan vendor:publish' "blue" "*"
+    bannerColor 'BACKUPMANAGER: Running php artisan vendor:publish' "blue" "*"
     php artisan vendor:publish --provider="Backpack\BackupManager\BackupManagerServiceProvider" || exit 4
     echo
-    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
+    bannerColor 'BACKUPMANAGER: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('backup') }}'><i class='nav-icon la la-hdd-o'></i> Backups</a></li>" || exit 4
     echo
-    bannerColor 'Adding backup to config/filesystems' "blue" "*"
+    bannerColor 'BACKUPMANAGER: Adding backup to config/filesystems' "blue" "*"
     # Add a new "disk" to config/filesystems.php:
     sed -i "/'disks'/r ${script_dir}/bp_files/disk_backup.txt" ./config/filesystems.php
     echo
-    bannerColor "BackupManager installed " "blue" "*"
+    bannerColor "BACKUPMANAGER: BackupManager installed " "blue" "*"
 }

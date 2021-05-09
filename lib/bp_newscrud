@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_newscrud() {
@@ -6,20 +8,20 @@ fn_newscrud() {
     laravel_dir=$1
     cd "${laravel_dir}" || exit 1
 
-    bannerColor "Installing NewsCRUD." "blue" "*"
+    bannerColor "NEWSCRUD: Installing NewsCRUD." "blue" "*"
     echo
-    bannerColor 'Running composer require backpack/newscrud' "blue" "*"
+    bannerColor 'NEWSCRUD: Running composer require backpack/newscrud' "blue" "*"
     echo
     composer require backpack/newscrud || exit 4
     echo
-    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
+    bannerColor 'NEWSCRUD: Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Backpack\NewsCRUD\NewsCRUDServiceProvider" || exit 4
     echo
-    bannerColor 'Running php artisan migrate' "blue" "*"
+    bannerColor 'NEWSCRUD: Running php artisan migrate' "blue" "*"
     php artisan migrate || exit 4
     echo
-    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
+    bannerColor 'NEWSCRUD: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item nav-dropdown'><a class='nav-link nav-dropdown-toggle' href='#'><i class='nav-icon la la-newspaper-o'></i>News</a><ul class='nav-dropdown-items'><li class='nav-item'><a class='nav-link' href='{{ backpack_url('article') }}'><i class='nav-icon la la-newspaper-o'></i> Articles</a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('category') }}'><i class='nav-icon la la-list'></i> Categories</a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('tag') }}'><i class='nav-icon la la-tag'></i> Tags</a></li></ul></li>" || exit 4
     echo
-    bannerColor 'NewsCRUD installed.' "blue" "*"
+    bannerColor 'NEWSCRUD: NewsCRUD installed.' "blue" "*"
 }

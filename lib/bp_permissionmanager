@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_permissionmanager() {
@@ -8,30 +10,30 @@ fn_permissionmanager() {
     cd "${laravel_dir}" || exit 1
 
     echo
-    bannerColor "Installing PermissionManager." "blue" "*"
+    bannerColor "PERMISSIONMANAGER: Installing PermissionManager." "blue" "*"
     echo
-    bannerColor 'Running composer require backpack/permissionmanager' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Running composer require backpack/permissionmanager' "blue" "*"
     composer require backpack/permissionmanager || exit 4
     echo
-    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="migrations" || exit 4
     echo
-    bannerColor 'Running php artisan migrate' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Running php artisan migrate' "blue" "*"
     php artisan migrate || exit 4
     echo
-    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="config"
     echo
-    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Backpack\PermissionManager\PermissionManagerServiceProvider" --tag="config" || exit 4
     echo
-    bannerColor 'Running the migraions: ' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Running the migraions: ' "blue" "*"
     php artisan migrate || exit 4
     echo
-    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<!-- Users, Roles, Permissions --><li class='nav-item nav-dropdown'><a class='nav-link nav-dropdown-toggle' href='#'><i class='nav-icon la la-users'></i> Authentication</a><ul class='nav-dropdown-items'><li class='nav-item'><a class='nav-link' href='{{ backpack_url('user') }}'><i class='nav-icon la la-user'></i> <span>Users</span></a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('role') }}'><i class='nav-icon la la-id-badge'></i> <span>Roles</span></a></li><li class='nav-item'><a class='nav-link' href='{{ backpack_url('permission') }}'><i class='nav-icon la la-key'></i> <span>Permissions</span></a></li></ul></li>"
     echo
-    bannerColor 'Changing App\Models\User.' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: Changing App\Models\User.' "blue" "*"
     cp "${script_dir}"/bp_files/User.php "${laravel_dir}"/app/Models/User.php
-    bannerColor 'PermissionManager installed.' "blue" "*"
+    bannerColor 'PERMISSIONMANAGER: PermissionManager installed.' "blue" "*"
 }

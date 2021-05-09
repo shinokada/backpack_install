@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_settings() {
@@ -7,21 +9,21 @@ fn_settings() {
     cd "${laravel_dir}" || exit 1
 
     echo
-    bannerColor "Installing Settings." "blue" "*"
-    bannerColor 'Running composer require backpack/settings' "blue" "*"
+    bannerColor "SETTINGS: Installing Settings." "blue" "*"
+    bannerColor 'SETTINGS: Running composer require backpack/settings' "blue" "*"
     composer require backpack/settings || exit 4
     echo
-    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
+    bannerColor 'SETTINGS: Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Backpack\Settings\SettingsServiceProvider" || exit 4
     echo
-    bannerColor 'Running php artisan migrate' "blue" "*"
+    bannerColor 'SETTINGS: Running php artisan migrate' "blue" "*"
     php artisan migrate || exit 4
     echo
-    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
+    bannerColor 'SETTINGS: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('setting') }}'><i class='nav-icon la la-cog'></i> <span>Settings</span></a></li>" || exit 4
     echo
-    bannerColor 'Running php artisan db:seed --class' "blue" "*"
+    bannerColor 'SETTINGS: Running php artisan db:seed --class' "blue" "*"
     php artisan db:seed --class="Backpack\Settings\database\seeds\SettingsTableSeeder" || exit 4
     echo
-    bannerColor "Settings installed" "blue" "*"
+    bannerColor "SETTINGS: Settings installed" "blue" "*"
 }

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_filemanager() {
@@ -7,12 +8,12 @@ fn_filemanager() {
     laravel_dir=$1
     cd "${laravel_dir}" || exit 1
 
-    bannerColor "Installing FileManager." "blue" "*"
-    bannerColor 'Running composer require backpack/filemanager' "blue" "*"
+    bannerColor "FILEMANAGER: Installing FileManager." "blue" "*"
+    bannerColor 'FILEMANAGER: Running composer require backpack/filemanager' "blue" "*"
     composer require backpack/filemanager || exit 4
     echo
-    bannerColor 'Running php artisan backpack:filemanager:install' "blue" "*"
+    bannerColor 'FILEMANAGER: Running php artisan backpack:filemanager:install' "blue" "*"
     php artisan backpack:filemanager:install || exit 4
     echo
-    bannerColor 'NewsCRUD installed.' "blue" "*"
+    bannerColor 'FILEMANAGER: NewsCRUD installed.' "blue" "*"
 }

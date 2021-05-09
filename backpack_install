@@ -102,6 +102,7 @@ done
 function import() {
     local file="./lib/${1}"
     if [ -f "${file}" ]; then
+        # shellcheck disable=SC1090
         source "${file}"
     else
         echo "Error: Cannot find library at: ${file}"
@@ -140,9 +141,13 @@ uninstall_bp() {
     composer remove backpack/menucrud
     composer remove backpack/newscrud
     composer remove backpack/filemanager
-    echo "Clearing config"
-    php artisan config:clear
-    echo "Cleaning up laravel.log"
+    bannerColor 'Removing files from database/migrations' "yellow" "*"
+    find "${laravel_dir}"/database/migrations -type f ! -name '*00000*' -delete
+    bannerColor 'Running php artisan optimize:clear' "yellow" "*"
+    php artisan optimize:clear
+    bannerColor 'Running composer dump-autoload' "yellow" "*"
+    composer dump-autoload
+    bannerColor "Cleaning up laravel.log" "yellow" "*"
     echo "" >"$laravel_dir"/storage/logs/laravel.log
     bannerColor "Please run the following commands for complete uninstallation." "yellow" "*"
     echo "$ cd $laravel_dir"

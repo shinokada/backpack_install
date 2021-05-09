@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_pagemanager() {
@@ -8,25 +10,25 @@ fn_pagemanager() {
     cd "${laravel_dir}" || exit 1
 
     echo
-    bannerColor "Installing PageManager." "blue" "*"
+    bannerColor "PAGEMANAGER: Installing PageManager." "blue" "*"
     echo
-    bannerColor 'Adding app/PageTemplates.php' "blue" "*"
+    bannerColor 'PAGEMANAGER: Adding app/PageTemplates.php' "blue" "*"
     pagetemp=./app/PageTemplates.php
     if [[ ! -e $pagetemp ]]; then
         cp "$script_dir"/bp_files/PageTemplates.php "$laravel_dir"/app
     fi
     echo
-    bannerColor 'Running composer require backpack/pagemanager' "blue" "*"
+    bannerColor 'PAGEMANAGER: Running composer require backpack/pagemanager' "blue" "*"
     composer require backpack/pagemanager || exit 4
     echo
-    bannerColor 'Running php artisan vendor:publish --provider' "blue" "*"
+    bannerColor 'PAGEMANAGER: Running php artisan vendor:publish --provider' "blue" "*"
     php artisan vendor:publish --provider="Backpack\PageManager\PageManagerServiceProvider" || exit 4
     echo
-    bannerColor 'Running php artisan migrate' "blue" "*"
+    bannerColor 'PAGEMANAGER: Running php artisan migrate' "blue" "*"
     php artisan migrate || exit 4
     echo
-    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
+    bannerColor 'PAGEMANAGER: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('page') }}'><i class='nav-icon la la-file-o'></i> <span>Pages</span></a></li>" || exit 4
     echo
-    bannerColor 'PageManager installed' "blue" "*"
+    bannerColor 'PAGEMANAGER: PageManager installed' "blue" "*"
 }

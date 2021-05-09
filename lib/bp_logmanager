@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# shellcheck disable=SC1091
 source ./lib/banners
 
 fn_logmanager() {
@@ -8,19 +10,19 @@ fn_logmanager() {
     cd "${laravel_dir}" || exit 1
 
     echo
-    bannerColor "Installing LogManager." "blue" "*"
-    bannerColor 'Running composer require backpack/logmanager' "blue" "*"
+    bannerColor "LOGMANAGER: Installing LogManager." "blue" "*"
+    bannerColor 'LOGMANAGER: Running composer require backpack/logmanager' "blue" "*"
     composer require backpack/logmanager || exit 4
     echo
-    bannerColor 'Adding storage to config/filesystems' "blue" "*"
+    bannerColor 'LOGMANAGER: Adding storage to config/filesystems' "blue" "*"
     # Add a new "disk" to config/filesystems.php:
     sed -i "/'disks'/r ${script_dir}/bp_files/disk_logmanager.txt" ./config/filesystems.php || exit 4
     echo
     # add APP_LOG=daily to .env
-    bannerColor 'Adding APP_LOG,daily to config/app.php.' "blue" "*"
+    bannerColor 'LOGMANAGER: Adding APP_LOG,daily to config/app.php.' "blue" "*"
     sed -i "/return/r ${script_dir}/bp_files/config_app_log.txt" ./config/app.php || exit 4
     echo
-    bannerColor 'Running php artisan backpack:add-sidebar-content' "blue" "*"
+    bannerColor 'LOGMANAGER: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon la la-terminal'></i> Logs</a></li>" || exit 4
 
     # echo 'Replacing "channels" => ["single"]'
@@ -29,5 +31,5 @@ fn_logmanager() {
     # FILENAME='config/logging.php'
     # sed -i "s/${ORIGINAL_STRING}/${NEW_STRING}/" $FILENAME || exit 4
     echo
-    bannerColor "LogManager installed" "blue" "*"
+    bannerColor "LOGMANAGER: LogManager installed" "blue" "*"
 }
