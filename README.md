@@ -72,6 +72,20 @@ Exit error status:
 
 When you have an error. You can use `echo $?` to output the error code.
 
+## After uninstallation
+
+After running uninstallation using `-u` flag, you are recommended running git reset, git clean and remove tables from the database.
+
+```terminal
+$ cd $laravel_dir"
+$ git reset --hard"
+$ git clean -f -d"
+```
+
+Then clear your database.
+
+Now you can install all modules again.
+
 ## Troubleshooting
 
 `backpack_install` files must be executable.
