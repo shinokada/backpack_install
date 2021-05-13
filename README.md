@@ -19,23 +19,23 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 
 1. Install laravel
 
-```terminal
-$ composer create-project laravel/laravel myproject
-```
+   ```terminal
+   composer create-project laravel/laravel myproject
+   ```
 
 2. Update .env file
 
-3. Start Laravel
+3. (Optional) Start Laravel
 
-```terminal
-$ php artisan serve
-```
+   ```terminal
+   php artisan serve
+   ```
 
 4. Download or clone this repo to another directory.
 
-```terminal
-$ cd /path/to/backpack_install
-```
+   ```terminal
+   cd /path/to/backpack_install
+   ```
 
 Then run one of following commands.
 
@@ -77,9 +77,9 @@ When you have an error. You can use `echo $?` to output the error code.
 After running uninstallation using `-u` flag, you are recommended running git reset and git clean.
 
 ```terminal
-$ cd $laravel_dir
-$ git reset --hard
-$ git clean -f -d
+cd $laravel_dir
+git reset --hard
+git clean -f -d
 ```
 
 Then clean your database.
@@ -91,8 +91,8 @@ Now you can install all modules again.
 `backpack_install` files must be executable.
 
 ```teminal
-$ chmod u+x backpack_install
-$ chmod -R u+x lib
+chmod u+x backpack_install
+chmod -R u+x lib
 ```
 
 ## Author
@@ -106,9 +106,9 @@ Please see license.txt.
 ## How to revert your project
 
 ```terminal
-$ cd /path/to/laravel
-$ git reset --hard
-$ git clean -f -d
+cd /path/to/laravel
+git reset --hard
+git clean -f -d
 ```
 
 Clean the database.

@@ -112,6 +112,8 @@ function import() {
 
 # Usage: import "filename"
 import "banners"
+import "utils"
+import "uninstall"
 import "bp_crud"
 import "bp_backupmanager"
 import "bp_logmanager"
@@ -122,79 +124,6 @@ import "bp_menucrud"
 import "bp_newscrud"
 import "bp_filemanager"
 
-check_cmd() {
-    if [[ ! $(command -v "$1") ]]; then
-        bannerColor "It seems like you don't have $1." "red" "*"
-        bannerColor "Please install $1 or add the PATH to .zshrc or .bash_profile." "red" "*"
-        exit 1
-    fi
-}
-
-uninstall_bp() {
-    laravel_dir="$1"
-    cd "$laravel_dir" || exit 1
-    composer remove backpack/backupmanager
-    composer remove backpack/logmanager
-    composer remove backpack/settings
-    composer remove backpack/permissionmanager
-    composer remove backpack/pagemanager
-    composer remove backpack/menucrud
-    composer remove backpack/newscrud
-    composer remove backpack/filemanager
-    bannerColor 'Removing files from database/migrations' "yellow" "*"
-    find "${laravel_dir}"/database/migrations -type f ! -name '*00000*' -delete
-    bannerColor 'Running php artisan optimize:clear' "yellow" "*"
-    php artisan optimize:clear
-    bannerColor 'Running composer dump-autoload' "yellow" "*"
-    composer dump-autoload
-    bannerColor "Cleaning up laravel.log" "yellow" "*"
-    echo "" >"$laravel_dir"/storage/logs/laravel.log
-    bannerColor "Please run the following commands for complete uninstallation." "yellow" "*"
-    echo "$ cd $laravel_dir"
-    if git rev-parse --git-dir >/dev/null 2>&1; then
-        echo "$ git reset --hard"
-        echo "$ git clean -f -d"
-    fi
-    echo "$ rm -rf vendor/backpack"
-    bannerColor "Then clear your database." "yellow" "*"
-    exit 0
-}
-
-#########################
-# Globals: $vendor_dir, $laravel_dir
-# Arguments: one of followings,
-# crud, backupmanager, filemanager, generators, logmanager,
-# menucrud, newscrud, pagemanager, permissionmanager, settings
-# Outputs: Y or N
-# Returns: 0 for success, 3 for fail
-##########################
-check_dir() {
-    PACKAGE=""
-    package_name=$1
-    laravel_dir=$2
-    script_dir=$3
-    cd "$laravel_dir" || exit
-    local dir_to_check=$laravel_dir/vendor/backpack/$package_name
-    while [[ -z "$PACKAGE" ]]; do
-        if [[ "${all}" = "true" ]]; then
-            if [[ -d "$dir_to_check" ]]; then
-                # if you have it ask if you want to overwrite
-                read -rp "It seems you already installed $1 packages. Do you want to overwrite it? yes/y or no/n.   " PACKAGE
-            else
-                PACKAGE=Y
-            fi
-        else
-            if [[ -d "$dir_to_check" ]]; then
-                # if you have it ask if you want to overwrite
-                read -rp "It seems you already installed $1 packages. Do you want to overwrite it? yes/y or no/n.   " PACKAGE
-            else
-                read -rp "Do you want to install ${1}? yes/y or no/n.   " PACKAGE
-            fi
-        fi
-    done
-
-    echo "$PACKAGE" | cut -c 1-1 | tr "[:lower:]" "[:upper:]"
-}
 # <<<<<<<< functions <<<<<<<<<<<<<<<<<
 
 # >>>>>>> event functions >>>>>>>>>>>
@@ -210,7 +139,7 @@ on_ctrl_c() {
 
 # Put this line at the beginning of your script (after functions used by event handlers).
 # Register CTRL+C event handler
-trap on_ctrl_c SIGINT ERR
+trap on_ctrl_c SIGINT
 
 # <<<<<<< event functions <<<<<<<<<<<
 
@@ -221,11 +150,11 @@ cd "$laravel_dir" || exit 1
 # if $uninstall is true run uninstall
 if [[ "$uninstall" = true ]]; then
     # confirm if you are sure
-    read -rp "Are you sure to uninstall? yes/y or no/n   " UNINST
+    options=("Yes" "No") # 0 or 1
+    inputChoice "Choose:" 0 "${options[@]}"
+    choice=$?
 
-    uninstall_ans=$(echo "$UNINST" | cut -c 1-1 | tr "[:lower:]" "[:upper:]")
-
-    if [ "$uninstall_ans" = Y ]; then
+    if [ "$choice" = 0 ]; then
         bannerColor "Uninstalling ..." "red" "*"
         uninstall_bp "$laravel_dir"
     else

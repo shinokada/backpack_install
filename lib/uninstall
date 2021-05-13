@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+uninstall_bp() {
+    laravel_dir="$1"
+    cd "$laravel_dir" || exit 1
+    composer remove backpack/backupmanager
+    composer remove backpack/logmanager
+    composer remove backpack/settings
+    composer remove backpack/permissionmanager
+    composer remove backpack/pagemanager
+    composer remove backpack/menucrud
+    composer remove backpack/newscrud
+    composer remove backpack/filemanager
+    bannerColor 'Removing files from database/migrations' "yellow" "*"
+    find "${laravel_dir}"/database/migrations -type f ! -name '*00000*' -delete
+    bannerColor 'Running php artisan optimize:clear' "yellow" "*"
+    php artisan optimize:clear
+    bannerColor 'Running composer dump-autoload' "yellow" "*"
+    composer dump-autoload
+    bannerColor "Cleaning up laravel.log" "yellow" "*"
+    echo "" >"$laravel_dir"/storage/logs/laravel.log
+    bannerColor "Please run the following commands for complete uninstallation." "yellow" "*"
+    echo "$ cd $laravel_dir"
+    if git rev-parse --git-dir >/dev/null 2>&1; then
+        echo "$ git reset --hard"
+        echo "$ git clean -f -d"
+    fi
+    echo "$ rm -rf vendor/backpack"
+    bannerColor "Then clear your database." "yellow" "*"
+    exit 0
+}
