@@ -10,7 +10,7 @@ set -e
 # >>>>>>>> default variables >>>>>>>>>>
 # set -u
 # set defaults
-version="v0.5.2"
+version="v0.5.3"
 script_name=$(basename "$0")
 all=""
 script_dir=""
