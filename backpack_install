@@ -10,7 +10,7 @@ set -e
 # >>>>>>>> default variables >>>>>>>>>>
 # set -u
 # set defaults
-version="0.5.3"
+version="0.5.4"
 script_name=$(basename "$0")
 all=""
 script_dir=""
@@ -83,8 +83,8 @@ while (($# > 0)); do
         fi
         laravel_dir=$2
         firstChar=${laravel_dir:0:1}
-        echo $laravel_dir
-        echo $firstChar
+        # echo $laravel_dir
+        # echo $firstChar
         if [[ "$firstChar" != "/" ]]; then
             echo "The directory must be an absolute path."
             exit
