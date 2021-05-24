@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set -e
 ########################
 # Author: Shinichi Okada
 # Date: 2021-05-10
@@ -8,10 +9,10 @@
 
 # >>>>>>>> default variables >>>>>>>>>>
 # set defaults
-version="v0.5.1"
+version="v0.5.2"
 script_name=$(basename "$0")
 all=""
-script_dir=$(pwd)
+script_dir=""
 laravel_dir=""
 # <<<<<<<< default variables <<<<<<<<<<
 
@@ -99,6 +100,23 @@ done
 
 # >>>>>>>> functions >>>>>>>>>>>>>>>>>
 # Usage: import "mylib"
+# check if $(which backpack_install) is a symlink 
+which_install=$(which backpack_install)
+
+if [[ -L $which_install ]]; then
+# check if installation is Homebrew
+# if so use script_dir=/opt/homebrew/Cellar/backpack_install/${version}/bin
+    if [[ "$which_install" == *"homebrew"* ]]; then
+        script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
+    else
+        link=$(readlink ${which_install})
+        script_dir=$(dirname ${link})
+    fi
+else
+    script_dir="./"
+fi
+
+
 function import() {
     local file="${script_dir}/lib/${1}"
     if [ -f "${file}" ]; then
@@ -179,6 +197,13 @@ trap on_ctrl_c SIGINT
 # <<<<<<< event functions <<<<<<<<<<<
 
 # >>>>>>> Check >>>>>>>>>>>>>>>>>>>>>
+# if $laravel_dir is empty or doesn't exist. Exit with warning.
+
+if [[ -z "${laravel_dir}" || ! -d "${laravel_dir}" ]]; then
+    bannerColor "You need to provide a correct path to your Laravel project" "red" "*"
+    exit 1
+fi
+
 # cd to the project
 cd "$laravel_dir" || exit 1
 
@@ -199,11 +224,7 @@ if [[ "$uninstall" = true ]]; then
     exit 0
 fi
 
-# if $laravel_dir is empty or doesn't exist. Exit with warning.
-if [[ -z "${laravel_dir}" || ! -d "${laravel_dir}" ]]; then
-    bannerColor "You need to provide a correct path to your Laravel project" "red" "*"
-    exit 1
-fi
+
 
 # check commands
 check_cmd sed
@@ -235,7 +256,6 @@ fi
 # >>>>>>>> main >>>>>>>>>>>>>>>>>>>>>>>>
 
 # 1. Install Backpack Core packages
-
 crud_ans=$(check_dir crud)
 if [[ "$crud_ans" = Y ]]; then
     fn_crud "$laravel_dir"
