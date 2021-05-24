@@ -13,7 +13,7 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 ## Requirement
 
 - You must have [Laravel](https://laravel.com/) installed and connected to a database. No data in the database.
-- sed
+- gsed
 
 ## Usage
 
