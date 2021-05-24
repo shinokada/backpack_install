@@ -100,7 +100,7 @@ done
 # >>>>>>>> functions >>>>>>>>>>>>>>>>>
 # Usage: import "mylib"
 function import() {
-    local file="./lib/${1}"
+    local file="${script_dir}/lib/${1}"
     if [ -f "${file}" ]; then
         # shellcheck disable=SC1090
         source "${file}"
