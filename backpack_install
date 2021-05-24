@@ -80,8 +80,16 @@ while (($# > 0)); do
         if [[ -z $2 ]]; then
             echo "Specify the directory."
             exit 1
-        fi 
+        fi
         laravel_dir=$2
+        firstChar=${laravel_dir:0:1}
+        echo $laravel_dir
+        echo $firstChar
+        if [[ "$firstChar" != "/" ]]; then
+            echo "The directory must be an absolute path."
+            exit
+        fi 
+        # laravel_dir=$2
         shift 2
         ;;
     -v | --version)
@@ -203,10 +211,7 @@ trap on_ctrl_c SIGINT
 # <<<<<<< event functions <<<<<<<<<<<
 
 # >>>>>>> Check >>>>>>>>>>>>>>>>>>>>>
-# check laravel_dir
-
 # cd to the project
-
 cd "$laravel_dir" || exit 1
 
 # if $uninstall is true run uninstall
