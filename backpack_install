@@ -8,6 +8,7 @@ set -e
 ###########################
 
 # >>>>>>>> default variables >>>>>>>>>>
+# set -u
 # set defaults
 version="v0.5.2"
 script_name=$(basename "$0")
@@ -34,6 +35,7 @@ BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, a
 Requirement:
 ============
 You must have Laravel installed and connected to a database.
+gsed
 
 Usage:
 ======
@@ -75,6 +77,10 @@ EOF
 while (($# > 0)); do
     case "$1" in
     -d | --dir)
+        if [[ -z $2 ]]; then
+            echo "Specify the directory."
+            exit 1
+        fi 
         laravel_dir=$2
         shift 2
         ;;
@@ -197,14 +203,10 @@ trap on_ctrl_c SIGINT
 # <<<<<<< event functions <<<<<<<<<<<
 
 # >>>>>>> Check >>>>>>>>>>>>>>>>>>>>>
-# if $laravel_dir is empty or doesn't exist. Exit with warning.
-
-if [[ -z "${laravel_dir}" || ! -d "${laravel_dir}" ]]; then
-    bannerColor "You need to provide a correct path to your Laravel project" "red" "*"
-    exit 1
-fi
+# check laravel_dir
 
 # cd to the project
+
 cd "$laravel_dir" || exit 1
 
 # if $uninstall is true run uninstall
@@ -225,9 +227,8 @@ if [[ "$uninstall" = true ]]; then
 fi
 
 
-
 # check commands
-check_cmd sed
+check_cmd gsed
 check_cmd composer
 check_cmd laravel
 

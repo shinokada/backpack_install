@@ -36,7 +36,7 @@ fn_backupmanager() {
     echo
     bannerColor 'BACKUPMANAGER: Adding backup to config/filesystems' "blue" "*"
     # Add a new "disk" to config/filesystems.php:
-    sed -i "/'disks'/r ${script_dir}/bp_files/disk_backup.txt" ./config/filesystems.php
+    gsed -i "/'disks'/r ${script_dir}/bp_files/disk_backup.txt" ./config/filesystems.php
     echo
     bannerColor "BACKUPMANAGER: BackupManager installed " "blue" "*"
 }
