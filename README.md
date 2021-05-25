@@ -15,47 +15,77 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 - You must have [Laravel](https://laravel.com/) installed and connected to a database. No data in the database.
 - gsed
 
-## Usage
+## Installation
+
+### Homebrew
+
+```sh
+brew tap shinokada/backpack_install
+brew install backpack_install
+```
+
+### Clone or download
+
+You can clone or download repo and move to another directory.
+
+```sh
+cd /path/to/backpack_install
+```
+
+If you have a `~/bin` path in your terminal config (.zshrc, .bash_profile), you can add a symlink.
+
+```sh
+ln -sf ~/path/to/your/gitstart ~/bin/gitstart
+# e.g.
+ln -sf ~/Bash_Projects/Gitstart/gitstart-repo/gitstart ~/bin/gitstart
+```
+
+## Set up
 
 1. Install laravel
 
-   ```terminal
+   ```sh
    composer create-project laravel/laravel myproject
    ```
 
-2. Update .env file
+2. Update .env file.
+
+   If you are using MAMP:
+
+   ```sh
+   ...
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=8889
+   DB_DATABASE=example_app
+   DB_USERNAME=root
+   DB_PASSWORD=root
+   ...
+   ```
 
 3. (Optional) Start Laravel
 
-   ```terminal
+   ```sh
    php artisan serve
    ```
 
-4. Download or clone this repo to another directory.
+### Usage
 
-   ```terminal
-   cd /path/to/backpack_install
-   ```
-
-Then run one of following commands.
-
-### Examples
-
-```terminal
+```sh
 # Install all modules at once
-$ ./backpack_install -a -d /path/to/laravel/project
+$ backpack_install -a -d /path/to/laravel/project
 
 # Install one by one
-$ ./backpack_install -d /path/to/laravel/project
+$ backpack_install -d /path/to/laravel/project
 
 Uninstall all modules
-$ ./$script_name -u -d /path/to/laravel/project
+$ backpack_install -u -d /path/to/laravel/project
 
 # get help
-$ ./backpack_install -h
+$ backpack_install -h
 
 # get version
-$ ./backpack_install -v
+$ backpack_install -v
 ```
 
 ## After installation
@@ -64,27 +94,17 @@ $ ./backpack_install -v
 
 - Add `Spatie\Permission\Traits\HasRoles` trait to your User model(s). See more on [For PermissionManager](https://github.com/Laravel-Backpack/PermissionManager#install).
 
-Exit error status:
-
-```terminal
-    4:  Error
-```
-
-When you have an error. You can use `echo $?` to output the error code.
-
 ## After uninstallation
 
 After running uninstallation using `-u` flag, you are recommended running git reset and git clean.
 
-```terminal
+```sh
 cd $laravel_dir
 git reset --hard
 git clean -f -d
 ```
 
-Then clean your database.
-
-Now you can install all modules again.
+Clean your database.
 
 ## Troubleshooting
 
@@ -102,13 +122,3 @@ Shinichi Okada
 ## Licence
 
 Please see license.txt.
-
-## How to revert your project
-
-```terminal
-cd /path/to/laravel
-git reset --hard
-git clean -f -d
-```
-
-Clean the database.
