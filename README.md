@@ -8,6 +8,8 @@ Tested on macOS and it should work on Linux.
 
 Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, and NewsCrud.
 
+[Medium Article](https://codeburst.io/installing-backpack-for-laravel-modules-with-a-line-of-command-eda01d72639f)
+
 ## Installation
 
 ### macOS
