@@ -21,7 +21,7 @@ brew install backpack_install
 
 ### Linux
 
-You can clone or download repo and move to another directory.
+You can clone or download the repo and move it to another directory.
 Create `~/bin` directory.
 
 ```sh
@@ -34,7 +34,7 @@ mv backpack_install ~/bin
 
 ## Set up
 
-1. Install laravel
+1. Install Laravel
 
    ```sh
    composer create-project laravel/laravel myproject
@@ -96,7 +96,7 @@ backpack_install -v
 
 ## After uninstallation
 
-After running uninstallation using `-u` flag, you are recommended running git reset and git clean.
+After running uninstallation using `-u` flag, you are recommended to run `git reset` and `git clean`.
 
 ```sh
 cd $laravel_dir
@@ -119,6 +119,6 @@ chmod -R u+x lib
 
 Shinichi Okada
 
-## Licence
+## License
 
 Please see license.txt.
