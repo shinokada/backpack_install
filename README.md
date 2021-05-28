@@ -8,8 +8,6 @@ Tested on macOS and it should work on Linux.
 
 Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, and NewsCrud.
 
-![backpack_install demo](https://github.com/shinokada/backpack_install/blob/main/images/backpack-demo.gif?raw=true)
-
 ## Installation
 
 ### macOS
