@@ -10,34 +10,26 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 
 ![backpack_install demo](https://github.com/shinokada/backpack_install/blob/main/images/backpack-demo.gif?raw=true)
 
-## Requirement
-
-- You must have [Laravel](https://laravel.com/) installed and connected to a database. No data in the database.
-- gsed
-
 ## Installation
 
-### Homebrew
+### macOS
 
 ```sh
 brew tap shinokada/backpack_install
 brew install backpack_install
 ```
 
-### Clone or download
+### Linux
 
 You can clone or download repo and move to another directory.
+Create `~/bin` directory.
 
 ```sh
-cd /path/to/backpack_install
-```
-
-If you have a `~/bin` path in your terminal config (.zshrc, .bash_profile), you can add a symlink.
-
-```sh
-ln -sf ~/path/to/your/gitstart ~/bin/gitstart
-# e.g.
-ln -sf ~/Bash_Projects/Gitstart/gitstart-repo/gitstart ~/bin/gitstart
+cd ~
+mkdir ~/bin
+echo export PATH="$HOME/bin:$PATH" > ~/.bashrc
+git clone git@github.com:shinokada/backpack_install.git
+mv backpack_install ~/bin
 ```
 
 ## Set up
@@ -69,23 +61,31 @@ ln -sf ~/Bash_Projects/Gitstart/gitstart-repo/gitstart ~/bin/gitstart
    php artisan serve
    ```
 
-### Usage
+## Usage
 
 ```sh
 # Install all modules at once
-$ backpack_install -a -d /path/to/laravel/project
+composer create-project laravel/laravel myproject
+cd myproject
+backpack_install
 
 # Install one by one
-$ backpack_install -d /path/to/laravel/project
+backpack_install -p
 
-Uninstall all modules
-$ backpack_install -u -d /path/to/laravel/project
+# If you want to set dir
+backpack_install -d /path/to/myproject
+
+
+# Uninstall all modules
+backpack_install -u
+# or with -d
+backpack_install -u -d /path/to/laravel/project
 
 # get help
-$ backpack_install -h
+backpack_install -h
 
 # get version
-$ backpack_install -v
+backpack_install -v
 ```
 
 ## After installation
