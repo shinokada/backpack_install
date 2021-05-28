@@ -3,8 +3,8 @@
 which_install=$(which backpack_install)
 
 if [[ -L $which_install ]]; then
-# check if installation is Homebrew
-# if so use script_dir=/opt/homebrew/Cellar/backpack_install/${version}/bin
+    # check if installation is Homebrew
+    # if so use script_dir=/opt/homebrew/Cellar/backpack_install/${version}/bin
     if [[ "$which_install" == *"homebrew"* ]]; then
         script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
     else
@@ -19,7 +19,6 @@ source "${script_dir}/lib/banners"
 
 fn_crud() {
     laravel_dir=${1}
-    echo ${laravel_dir}
     cd "${laravel_dir}" || exit 1
     echo
     bannerColor 'Installing CRUD.' "blue" "*"

@@ -10,7 +10,7 @@ set -e
 # >>>>>>>> default variables >>>>>>>>>>
 # set -u
 # set defaults
-version="0.6.0"
+version="0.6.1"
 script_name=$(basename "$0")
 partial=""
 script_dir=""
@@ -115,6 +115,7 @@ while (($# > 0)); do
         ;;
     esac
 done
+
 # <<<<<<<< argument <<<<<<<<<<<<<<<<<<
 
 # >>>>>>>> functions >>>>>>>>>>>>>>>>>
@@ -146,7 +147,7 @@ fn_check_db_connection() {
         bannerColor "Database not connected. Create a database and update your .env file." "red" "*"
         exit 1
     fi
-    echo "DB connected"
+    bannerColor "DB connected" "blue" "*"
 }
 
 fn_confirm() {
@@ -190,8 +191,8 @@ import "bp_filemanager"
 on_ctrl_c() {
     echo       # Set cursor to the next line of '^C'
     tput cnorm # show cursor. You need this if animation is used.
-    echo "Terminated with Ctrl+C."
-    echo "Removing backpack modules ..."
+    bannerColor "Terminated with Ctrl+C." "yellow" "*"
+    bannerColor "Removing backpack modules ..." "yellow" "*"
     uninstall_bp "$laravel_dir"
     exit 1 # Don't remove. Use a number (1-255) for error code.
 }
@@ -222,9 +223,7 @@ fn_check_db_connection
 
 # >>>>>>>> main >>>>>>>>>>>>>>>>>>>>>>>>
 
-if [ $partial = "true" ]; then
-
-    echo "partial installation"
+if [[ "$partial" = "true" ]]; then
     if [[ $(fn_confirm crud) = "Y" ]]; then
         fn_crud "$laravel_dir"
     fi
