@@ -25,11 +25,17 @@ You can clone or download the repo and move it to another directory.
 Create `~/bin` directory.
 
 ```sh
-cd ~
-mkdir ~/bin
-echo export PATH="$HOME/bin:$PATH" > ~/.bashrc
+# create a dir. I use awesome
+mkdir ~/awesome
+cd ~/awesome
 git clone git@github.com:shinokada/backpack_install.git
-mv backpack_install ~/bin
+
+# If you don't have a bin dir
+mkdir ~/bin
+echo export PATH='$HOME/bin:$PATH' >> ~/.bashrc
+
+# create a symlink
+ln -s /home/your-username/awesome/backpack_install/backpack_install ~/bin/backpack_install
 ```
 
 ## Set up
