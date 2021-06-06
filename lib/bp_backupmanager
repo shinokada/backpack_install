@@ -1,7 +1,29 @@
 #!/usr/bin/env bash
 
+which_install=$(which backpack_install)
+
+if [[ -L $which_install ]]; then
+    # check if installation is Homebrew
+    # if so use script_dir=/opt/homebrew/Cellar/backpack_install/${version}/bin
+    if [[ "$which_install" == *"homebrew"* ]]; then
+        script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
+    else
+        link=$(readlink ${which_install})
+        script_dir=$(dirname ${link})
+    fi
+else
+    script_dir="./"
+fi
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux
+    sed=sed
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Mac OSX
+    sed=gsed
+fi
 # shellcheck disable=SC1091
-source ./lib/banners
+source "${script_dir}/lib/banners"
 
 fn_backupmanager() {
 
@@ -22,7 +44,7 @@ fn_backupmanager() {
     echo
     bannerColor 'BACKUPMANAGER: Adding backup to config/filesystems' "blue" "*"
     # Add a new "disk" to config/filesystems.php:
-    sed -i "/'disks'/r ${script_dir}/bp_files/disk_backup.txt" ./config/filesystems.php
+    $sed -i "/'disks'/r ${script_dir}/bp_files/disk_backup.txt" ./config/filesystems.php
     echo
     bannerColor "BACKUPMANAGER: BackupManager installed " "blue" "*"
 }

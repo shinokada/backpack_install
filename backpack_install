@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 
+set -e
 ########################
 # Author: Shinichi Okada
-# Date: 2021-05-10
+# Date: 2021-05-25
 # Backpack for Laravel installer
 ###########################
 
 # >>>>>>>> default variables >>>>>>>>>>
+# set -u
 # set defaults
-version="v0.5.0"
+version="0.6.2"
 script_name=$(basename "$0")
-all=""
-script_dir=$(pwd)
-laravel_dir=""
+partial=""
+script_dir=""
+laravel_dir=$(pwd)
 # <<<<<<<< default variables <<<<<<<<<<
 
 # >>>>>>>> argument >>>>>>>>>>>>>>>>>>
@@ -33,56 +35,74 @@ BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, a
 Requirement:
 ============
 You must have Laravel installed and connected to a database.
+gsed or sed
 
 Usage:
 ======
-./$script_name [ -a | -all ] [ -d path | --dir path] [ -u | --uninstall ] [ -v | --version ] [ -h | --help ] 
+./$script_name [ -d path | --dir path] [ -u | --uninstall ] [ -v | --version ] [ -h | --help ] 
     -d | --dir       Absolute path to Laravel project.          
-    -a | --all       This will install all modules.
+    -p | --partial    This will install modules one by one.
     -u | --uninstall Uninstall all modules.
     -v | --version   Script version.
     -h | --help      Show help.
 
 Examples:
 =========
-    cd to $script_name directory
-    $ cd /path/to/$script_name
 
-    Install all modules
-    $ ./$script_name -a -d /path/to/laravel/project
+    # Install all modules at once
+    composer create-project laravel/laravel myproject
+    cd myproject
+    backpack_install
 
-    Install modules one by one
-    $ ./$script_name -d /path/to/laravel/project
+    # Install one by one
+    backpack_install -p
 
-    Uninstall all modules
-    $ ./$script_name -u -d /path/to/laravel/project
+    # If you want to set dir
+    backpack_install -d /path/to/myproject
 
-    Get help
-    $ ./$script_name -h
+    # Uninstall all modules
+    backpack_install -u
+    # or with -d
+    backpack_install -u -d /path/to/laravel/project
 
-    Get version
-    $ ./$script_name -v
+    # get help
+    backpack_install -h
 
-Exit error status:
-==================
-    4:  Error
-
+    # get version
+    backpack_install -v
 EOF
     exit 2
+}
+
+fn_checkDir() {
+    if [[ -z $1 ]]; then
+        echo "Specify the directory."
+        exit 1
+    fi
+    laravel_dir=$1
+    firstChar=${laravel_dir:0:1}
+    # echo $laravel_dir
+    # echo $firstChar
+    if [[ "$firstChar" != "/" ]]; then
+        echo "The directory must be an absolute path."
+        exit
+    fi
+    echo $laravel_dir
 }
 
 while (($# > 0)); do
     case "$1" in
     -d | --dir)
-        laravel_dir=$2
+        # echo $2
+        laravel_dir=($fn_checkDir $2)
         shift 2
         ;;
     -v | --version)
         echo "$version"
         exit 0
         ;;
-    -a | --all)
-        all=true
+    -p | --partial)
+        partial=true
         shift 1
         ;;
     -u | --uninstall)
@@ -95,12 +115,52 @@ while (($# > 0)); do
         ;;
     esac
 done
+
 # <<<<<<<< argument <<<<<<<<<<<<<<<<<<
 
 # >>>>>>>> functions >>>>>>>>>>>>>>>>>
 # Usage: import "mylib"
+# check if $(which backpack_install) is a symlink
+
+fn_script_dir() {
+    which_install=$(which backpack_install)
+
+    if [[ -L $which_install ]]; then
+        # check if installation is Homebrew
+        # if so use script_dir=/opt/homebrew/Cellar/backpack_install/${version}/bin
+        if [[ "$which_install" == *"homebrew"* ]]; then
+            script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
+        else
+            link=$(readlink ${which_install})
+            script_dir=$(dirname ${link})
+        fi
+    else
+        script_dir="./"
+    fi
+    echo $script_dir
+}
+
+script_dir=$(fn_script_dir)
+
+fn_check_db_connection() {
+    if php artisan migrate:status | grep "Connection refused"; then
+        bannerColor "Database not connected. Create a database and update your .env file." "red" "*"
+        exit 1
+    fi
+    bannerColor "DB connected" "blue" "*"
+}
+
+fn_confirm() {
+    local package=$1
+    read -rp "Do you want to install $package? yes/y or no/n   " PANS
+
+    ans=$(echo "$PANS" | cut -c 1-1 | tr "[:lower:]" "[:upper:]")
+
+    echo $ans
+}
+
 function import() {
-    local file="./lib/${1}"
+    local file="${script_dir}/lib/${1}"
     if [ -f "${file}" ]; then
         # shellcheck disable=SC1090
         source "${file}"
@@ -109,7 +169,7 @@ function import() {
         exit 1
     fi
 }
-
+# echo $script_dir
 # Usage: import "filename"
 import "banners"
 import "utils"
@@ -124,41 +184,6 @@ import "bp_menucrud"
 import "bp_newscrud"
 import "bp_filemanager"
 
-#########################
-# Globals: $vendor_dir, $laravel_dir
-# Arguments: one of followings,
-# crud, backupmanager, filemanager, generators, logmanager,
-# menucrud, newscrud, pagemanager, permissionmanager, settings
-# Outputs: Y or N
-# Returns: 0 for success, 3 for fail
-##########################
-check_dir() {
-    PACKAGE=""
-    package_name=$1
-    laravel_dir=$2
-    script_dir=$3
-    cd "$laravel_dir" || exit
-    local dir_to_check=$laravel_dir/vendor/backpack/$package_name
-    while [[ -z "$PACKAGE" ]]; do
-        if [[ "${all}" = "true" ]]; then
-            if [[ -d "$dir_to_check" ]]; then
-                # if you have it ask if you want to overwrite
-                read -rp "It seems you already installed $1 packages. Do you want to overwrite it? yes/y or no/n.   " PACKAGE
-            else
-                PACKAGE=Y
-            fi
-        else
-            if [[ -d "$dir_to_check" ]]; then
-                # if you have it ask if you want to overwrite
-                read -rp "It seems you already installed $1 packages. Do you want to overwrite it? yes/y or no/n.   " PACKAGE
-            else
-                read -rp "Do you want to install ${1}? yes/y or no/n.   " PACKAGE
-            fi
-        fi
-    done
-
-    echo "$PACKAGE" | cut -c 1-1 | tr "[:lower:]" "[:upper:]"
-}
 # <<<<<<<< functions <<<<<<<<<<<<<<<<<
 
 # >>>>>>> event functions >>>>>>>>>>>
@@ -166,8 +191,8 @@ check_dir() {
 on_ctrl_c() {
     echo       # Set cursor to the next line of '^C'
     tput cnorm # show cursor. You need this if animation is used.
-    echo "Terminated with Ctrl+C."
-    echo "Removing backpack modules ..."
+    bannerColor "Terminated with Ctrl+C." "yellow" "*"
+    bannerColor "Removing backpack modules ..." "yellow" "*"
     uninstall_bp "$laravel_dir"
     exit 1 # Don't remove. Use a number (1-255) for error code.
 }
@@ -180,9 +205,9 @@ trap on_ctrl_c SIGINT
 
 # >>>>>>> Check >>>>>>>>>>>>>>>>>>>>>
 # cd to the project
+# echo $laravel_dir
 cd "$laravel_dir" || exit 1
 
-# if $uninstall is true run uninstall
 if [[ "$uninstall" = true ]]; then
     # confirm if you are sure
     options=("Yes" "No") # 0 or 1
@@ -199,94 +224,53 @@ if [[ "$uninstall" = true ]]; then
     exit 0
 fi
 
-# if $laravel_dir is empty or doesn't exist. Exit with warning.
-if [[ -z "${laravel_dir}" || ! -d "${laravel_dir}" ]]; then
-    bannerColor "You need to provide a correct path to your Laravel project" "red" "*"
-    exit 1
+# check commands
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux
+    check_cmd sed
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Mac OSX
+    check_cmd gsed
 fi
 
-# check commands
-check_cmd sed
 check_cmd composer
 check_cmd laravel
-
-# Confirm if user updated the .env file especially APP_URL
-read -rp "Have you updated .env file, like APP_URL, etc? yes/y or no/n   " ENV
-
-env_ans=$(echo "$ENV" | cut -c 1-1 | tr "[:lower:]" "[:upper:]")
-
-if [ ! "$env_ans" = Y ]; then
-    bannerColor "Update your .env file." "red" "*"
-    exit 1
-fi
-
-# Confirm you are connected to DB
-read -rp "Are you connected to DB? yes/y or no/n   " RUNNING
-
-run_ans=$(echo "$RUNNING" | cut -c 1-1 | tr "[:lower:]" "[:upper:]")
-
-if [ ! "$run_ans" = Y ]; then
-    bannerColor "You need to connect to DB and run Laravel." "red" "*"
-    exit 1
-fi
+fn_check_db_connection
 
 # <<<<<<< Check <<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>> main >>>>>>>>>>>>>>>>>>>>>>>>
 
-# 1. Install Backpack Core packages
-
-crud_ans=$(check_dir crud)
-if [[ "$crud_ans" = Y ]]; then
-    fn_crud "$laravel_dir"
-fi
-
-# 2. Install BackupManager
-backup_ans=$(check_dir backupmanager "$laravel_dir" "$script_dir")
-if [[ "$backup_ans" = Y ]]; then
-    fn_backupmanager "$laravel_dir" "$script_dir"
-fi
-
-# 3. Install LogManager
-log_ans=$(check_dir logmanager "$laravel_dir" "$script_dir")
-if [[ "$log_ans" = Y ]]; then
-    fn_logmanager "$laravel_dir" "$script_dir"
-fi
-
-# 4. Install Settings
-setting_ans=$(check_dir settings "$laravel_dir" "$script_dir")
-if [[ "$setting_ans" = Y ]]; then
-    fn_settings "$laravel_dir"
-fi
-
-# 5. Install PageManager
-page_ans=$(check_dir pagemanager "$laravel_dir" "$script_dir")
-if [[ "$page_ans" = Y ]]; then
-    fn_pagemanager "$laravel_dir" "$script_dir"
-fi
-
-# 6. Install PermissionManager
-permission_ans=$(check_dir permissionmanager "$laravel_dir" "$script_dir")
-if [[ "$permission_ans" = Y ]]; then
-    fn_permissionmanager "$laravel_dir" "$script_dir"
-fi
-
-# 7. Install MenuCrud
-menu_ans=$(check_dir menucrud "$laravel_dir" "$script_dir")
-if [[ "$menu_ans" = Y ]]; then
-    fn_menucrud "$laravel_dir"
-fi
-
-# 8. Install NewsCrud
-news_ans=$(check_dir newscrud "$laravel_dir" "$script_dir")
-if [[ "$news_ans" = Y ]]; then
-    fn_newscrud "$laravel_dir"
-fi
-
-# 9. Install FileManager
-file_ans=$(check_dir filemanager "$laravel_dir" "$script_dir")
-if [[ "$file_ans" = Y ]]; then
-    fn_filemanager "$laravel_dir"
+if [[ "$partial" = "true" ]]; then
+    if [[ $(fn_confirm crud) = "Y" ]]; then
+        fn_crud "$laravel_dir"
+    fi
+    if [[ $(fn_confirm backupmanager) = "Y" ]]; then
+        fn_backupmanager "$laravel_dir" "$script_dir"
+    fi
+    if [[ $(fn_confirm logmanager) = "Y" ]]; then
+        fn_logmanager "$laravel_dir" "$script_dir"
+    fi
+    if [[ $(fn_confirm settings) = "Y" ]]; then
+        fn_settings "$laravel_dir"
+    fi
+    if [[ $(fn_confirm pagemanager) = "Y" ]]; then
+        fn_pagemanager "$laravel_dir" "$script_dir"
+    fi
+    if [[ $(fn_confirm permissionmanager) = "Y" ]]; then
+        fn_permissionmanager "$laravel_dir" "$script_dir"
+    fi
+    if [[ $(fn_confirm menucrud) = "Y" ]]; then
+        fn_menucrud "$laravel_dir"
+    fi
+    if [[ $(fn_confirm newscrud) = "Y" ]]; then
+        fn_newscrud "$laravel_dir"
+    fi
+    if [[ $(fn_confirm filemanager) = "Y" ]]; then
+        fn_filemanager "$laravel_dir"
+    fi
+else
+    fn_crud "$laravel_dir" && fn_backupmanager "$laravel_dir" "$script_dir" && fn_logmanager "$laravel_dir" "$script_dir" && fn_settings "$laravel_dir" && fn_pagemanager "$laravel_dir" "$script_dir" && fn_permissionmanager "$laravel_dir" "$script_dir" && fn_menucrud "$laravel_dir" && fn_newscrud "$laravel_dir" && fn_filemanager "$laravel_dir"
 fi
 
 echo

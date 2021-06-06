@@ -1,7 +1,30 @@
 #!/usr/bin/env bash
 
+which_install=$(which backpack_install)
+
+if [[ -L $which_install ]]; then
+    # check if installation is Homebrew
+    # if so use script_dir=/opt/homebrew/Cellar/backpack_install/${version}/bin
+    if [[ "$which_install" == *"homebrew"* ]]; then
+        script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
+    else
+        link=$(readlink ${which_install})
+        script_dir=$(dirname ${link})
+    fi
+else
+    script_dir="./"
+fi
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux
+    sed=sed
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Mac OSX
+    sed=gsed
+fi
+
 # shellcheck disable=SC1091
-source ./lib/banners
+source "${script_dir}/lib/banners"
 
 fn_logmanager() {
 
@@ -16,11 +39,11 @@ fn_logmanager() {
     echo
     bannerColor 'LOGMANAGER: Adding storage to config/filesystems' "blue" "*"
     # Add a new "disk" to config/filesystems.php:
-    sed -i "/'disks'/r ${script_dir}/bp_files/disk_logmanager.txt" ./config/filesystems.php || exit 4
+    $sed -i "/'disks'/r ${script_dir}/bp_files/disk_logmanager.txt" ${laravel_dir}/config/filesystems.php || exit 4
     echo
     # add APP_LOG=daily to .env
     bannerColor 'LOGMANAGER: Adding APP_LOG,daily to config/app.php.' "blue" "*"
-    sed -i "/return/r ${script_dir}/bp_files/config_app_log.txt" ./config/app.php || exit 4
+    $sed -i "/return/r ${script_dir}/bp_files/config_app_log.txt" ${laravel_dir}/config/app.php || exit 4
     echo
     bannerColor 'LOGMANAGER: Running php artisan backpack:add-sidebar-content' "blue" "*"
     php artisan backpack:add-sidebar-content "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon la la-terminal'></i> Logs</a></li>" || exit 4

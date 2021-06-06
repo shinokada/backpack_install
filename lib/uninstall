@@ -7,8 +7,8 @@ uninstall_bp() {
     composer remove backpack/logmanager
     composer remove backpack/settings
     composer remove backpack/permissionmanager
-    composer remove backpack/pagemanager
     composer remove backpack/menucrud
+    composer remove backpack/pagemanager
     composer remove backpack/newscrud
     composer remove backpack/filemanager
     bannerColor 'Removing files from database/migrations' "yellow" "*"
