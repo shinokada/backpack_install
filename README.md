@@ -19,23 +19,23 @@ brew tap shinokada/backpack_install
 brew install backpack_install
 ```
 
-### Linux
+### awesome for Linux
 
-You can clone or download the repo and move it to another directory.
-Create `~/bin` directory.
+Install [awesome script package manager](https://github.com/shinokada/awesome):
 
 ```sh
-# create a dir. I use awesome
-mkdir ~/awesome
-cd ~/awesome
-git clone git@github.com:shinokada/backpack_install.git
-
-# If you don't have a bin dir
-mkdir ~/bin
+sudo apt install curl
+curl -s https://raw.githubusercontent.com/shinokada/awesome/main/install | bash -s install
+# Add ~/bin to PATH variable
 echo export PATH='$HOME/bin:$PATH' >> ~/.bashrc
+```
 
-# create a symlink
-ln -s /home/your-username/awesome/backpack_install/backpack_install ~/bin/backpack_install
+Install `backpack_install`:
+
+```sh
+awesome install https://github.com/shinokada/backpack_install.git
+# check the version
+backpack_install -v
 ```
 
 ## Set up

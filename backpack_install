@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
 ########################
 # Author: Shinichi Okada
 # Date: 2021-05-25
@@ -10,7 +9,7 @@ set -e
 # >>>>>>>> default variables >>>>>>>>>>
 # set -u
 # set defaults
-version="0.6.2"
+version="0.6.5"
 script_name=$(basename "$0")
 partial=""
 script_dir=""
@@ -87,14 +86,14 @@ fn_checkDir() {
         echo "The directory must be an absolute path."
         exit
     fi
-    echo $laravel_dir
+    echo "$laravel_dir"
 }
 
 while (($# > 0)); do
     case "$1" in
     -d | --dir)
         # echo $2
-        laravel_dir=($fn_checkDir $2)
+        laravel_dir=(fn_checkDir "$2")
         shift 2
         ;;
     -v | --version)
@@ -131,8 +130,8 @@ fn_script_dir() {
         if [[ "$which_install" == *"homebrew"* ]]; then
             script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
         else
-            link=$(readlink ${which_install})
-            script_dir=$(dirname ${link})
+            link=$(realpath "${which_install}")
+            script_dir=$(dirname "${link}")
         fi
     else
         script_dir="./"
@@ -156,7 +155,7 @@ fn_confirm() {
 
     ans=$(echo "$PANS" | cut -c 1-1 | tr "[:lower:]" "[:upper:]")
 
-    echo $ans
+    echo "$ans"
 }
 
 function import() {
@@ -223,7 +222,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 check_cmd composer
-check_cmd laravel
+if ! (("$(laravel_version)" > 7)); then
+    echo "Lavel version must be greater than 8." >&2
+    exit 1
+fi
+check_composer
 fn_check_db_connection
 
 # <<<<<<< Check <<<<<<<<<<<<<<<<<<<<<
