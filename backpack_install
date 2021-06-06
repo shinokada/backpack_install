@@ -186,7 +186,7 @@ cd "$laravel_dir" || exit 1
 if [[ "$uninstall" = true ]]; then
     # confirm if you are sure
     options=("Yes" "No") # 0 or 1
-    inputChoice "Choose:" 0 "${options[@]}"
+    inputChoice "Uninstalling packages. Are you sure?" 0 "${options[@]}"
     choice=$?
 
     if [ "$choice" = 0 ]; then
