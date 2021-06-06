@@ -223,7 +223,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 check_cmd composer
-check_cmd laravel
+if ! (("$(laravel_version)" > 7)); then
+    echo "Lavel version must be greater than 8." >&2
+    exit 1
+fi
+check_composer
 fn_check_db_connection
 
 # <<<<<<< Check <<<<<<<<<<<<<<<<<<<<<

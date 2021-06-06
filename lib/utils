@@ -84,6 +84,19 @@ check_cmd() {
     fi
 }
 
-check_laravel(){
-    php artisan --version | cut -d' ' -f3
+laravel_version() {
+    php artisan --version | cut -d' ' -f3 | cut -d. -f1
+}
+
+check_composer() {
+    if [[ -e "composer.json" ]]; then
+        if cat <composer.json | grep 'laravel/framework' >/dev/null; then
+            echo "Laravel in composer.json is OK."
+        else
+            exit 1
+        fi
+    else
+        echo "No composer.json" >&2
+        exit 1
+    fi
 }
