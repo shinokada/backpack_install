@@ -96,6 +96,15 @@ backpack_install -v
 
 ## After installation
 
+Start Laravel.
+
+```sh
+php artisan serve
+```
+
+Visit http://127.0.0.1:8000/admin/login or http://127.0.0.1/admin/login depending the port you are using.
+
+
 - You need to configure [BackupManager optional](https://github.com/Laravel-Backpack/BackupManager#install).
 
 - Add `Spatie\Permission\Traits\HasRoles` trait to your User model(s). See more on [For PermissionManager](https://github.com/Laravel-Backpack/PermissionManager#install).
