@@ -10,7 +10,7 @@ set -e
 # >>>>>>>> default variables >>>>>>>>>>
 # set -u
 # set defaults
-version="0.6.1"
+version="0.6.2"
 script_name=$(basename "$0")
 partial=""
 script_dir=""
@@ -35,7 +35,7 @@ BackupManager, LogManager, Settings, PageManager, PermissionManager, MenuCrud, a
 Requirement:
 ============
 You must have Laravel installed and connected to a database.
-gsed
+gsed or sed
 
 Usage:
 ======
@@ -214,7 +214,14 @@ if [[ "$uninstall" = true ]]; then
 fi
 
 # check commands
-check_cmd gsed
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux
+    check_cmd sed
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Mac OSX
+    check_cmd gsed
+fi
+
 check_cmd composer
 check_cmd laravel
 fn_check_db_connection
