@@ -8,7 +8,7 @@ if [[ -L $which_install ]]; then
     if [[ "$which_install" == *"homebrew"* ]]; then
         script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
     else
-        link=$(readlink "${which_install}")
+        link=$(realpath "${which_install}")
         script_dir=$(dirname "${link}")
     fi
 else
