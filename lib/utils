@@ -83,3 +83,7 @@ check_cmd() {
         exit 1
     fi
 }
+
+check_laravel(){
+    php artisan --version | cut -d' ' -f3
+}
