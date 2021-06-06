@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
 ########################
 # Author: Shinichi Okada
 # Date: 2021-05-25
@@ -10,7 +9,7 @@ set -e
 # >>>>>>>> default variables >>>>>>>>>>
 # set -u
 # set defaults
-version="0.6.2"
+version="0.6.3"
 script_name=$(basename "$0")
 partial=""
 script_dir=""
