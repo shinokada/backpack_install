@@ -9,7 +9,7 @@
 # >>>>>>>> default variables >>>>>>>>>>
 # set -u
 # set defaults
-version="0.6.3"
+version="0.6.4"
 script_name=$(basename "$0")
 partial=""
 script_dir=""
