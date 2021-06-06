@@ -33,7 +33,7 @@ echo export PATH='$HOME/bin:$PATH' >> ~/.bashrc
 Install `backpack_install`:
 
 ```sh
-awesome install backpack_install
+awesome install https://github.com/shinokada/backpack_install.git
 # check the version
 backpack_install -v
 ```
