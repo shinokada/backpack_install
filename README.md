@@ -19,22 +19,12 @@ brew tap shinokada/backpack_install
 brew install backpack_install
 ```
 
-### awesome for Linux
+### Using Awesome Package Manager for Linux
 
 Install [awesome script package manager](https://github.com/shinokada/awesome):
 
 ```sh
-sudo apt install curl
-curl -s https://raw.githubusercontent.com/shinokada/awesome/main/install | bash -s install
-# Add ~/bin to PATH variable
-echo export PATH='$HOME/bin:$PATH' >> ~/.bashrc
-```
-
-Install `backpack_install`:
-
-```sh
-awesome install https://github.com/shinokada/backpack_install.git
-# check the version
+awesome -i shinokada/backpack_install
 backpack_install -v
 ```
 
