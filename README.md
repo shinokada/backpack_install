@@ -21,7 +21,7 @@ brew install backpack_install
 
 ### Using Awesome Package Manager for Linux
 
-Install [awesome script package manager](https://github.com/shinokada/awesome):
+After installing [awesome script package manager](https://github.com/shinokada/awesome):
 
 ```sh
 awesome -i shinokada/backpack_install
