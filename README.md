@@ -1,5 +1,5 @@
 <p align="center">
-<img width="400" src="https://raw.githubusercontent.com/shinokada/backpack_install/main/images/backpack_install.png" />
+<img width="400" src="https://raw.githubusercontent.com/shinokada/backpack_install/main/images/backpack-install.png" />
 </p>
 <h1  align="center">Backpack Installer for macOS/Linux</h1>
 
