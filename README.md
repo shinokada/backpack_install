@@ -1,19 +1,7 @@
-# Backpack Installer for macOS/Linux
-
-```sh
- ____    _    ____ _  ______   _    ____ _  __
-| __ )  / \  / ___| |/ /  _ \ / \  / ___| |/ /
-|  _ \ / _ \| |   | ' /| |_) / _ \| |   | ' /
-| |_) / ___ \ |___| . \|  __/ ___ \ |___| . \
-|____/_/   \_\____|_|\_\_| /_/   \_\____|_|\_\
-
- ___ _   _ ____ _____  _    _     _
-|_ _| \ | / ___|_   _|/ \  | |   | |
- | ||  \| \___ \ | | / _ \ | |   | |
- | || |\  |___) || |/ ___ \| |___| |___
-|___|_| \_|____/ |_/_/   \_\_____|_____|
-
-```
+<p align="center">
+<img width="400" src="https://raw.githubusercontent.com/shinokada/backpack_install/main/images/backpack_install.png" />
+</p>
+<h1  align="center">Backpack Installer for macOS/Linux</h1>
 
 ## Overview
 
