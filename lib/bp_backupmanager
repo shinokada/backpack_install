@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+myrealpath() {
+    local LINK REALPATH
+    local OURPWD=$PWD
+    cd "$(dirname "$1")" || exit
+    LINK=$(readlink "$(basename "$1")")
+    while [ "$LINK" ]; do
+        cd "$(dirname "$LINK")" || exit
+        LINK=$(readlink "$(basename "$1")")
+    done
+    REALPATH="$PWD/$(basename "$1")"
+    cd "$OURPWD" || exit
+    echo "$REALPATH"
+}
+
 which_install=$(which backpack_install)
 
 if [[ -L $which_install ]]; then
@@ -8,7 +22,7 @@ if [[ -L $which_install ]]; then
     if [[ "$which_install" == *"homebrew"* ]]; then
         script_dir="$(brew --prefix)/Cellar/backpack_install/${version}/bin"
     else
-        link=$(realpath "${which_install}")
+        link=$(myrealpath "${which_install}")
         script_dir=$(dirname "${link}")
     fi
 else
