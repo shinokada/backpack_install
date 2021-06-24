@@ -1,5 +1,20 @@
 # Backpack Installer for macOS/Linux
 
+<code>
+ ____    _    ____ _  ______   _    ____ _  __
+| __ )  / \  / ___| |/ /  _ \ / \  / ___| |/ /
+|  _ \ / _ \| |   | ' /| |_) / _ \| |   | ' /
+| |_) / ___ \ |___| . \|  __/ ___ \ |___| . \
+|____/_/   \_\____|_|\_\_| /_/   \_\____|_|\_\
+
+ ___ _   _ ____ _____  _    _     _
+|_ _| \ | / ___|_   _|/ \  | |   | |
+ | ||  \| \___ \ | | / _ \ | |   | |
+ | || |\  |___) || |/ ___ \| |___| |___
+|___|_| \_|____/ |_/_/   \_\_____|_____|
+
+</code>
+
 ## Overview
 
 This script automates to install all [Backpack for Laravel modules](https://backpackforlaravel.com/docs/4.1/installation) from your terminal.
