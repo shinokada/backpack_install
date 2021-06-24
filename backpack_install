@@ -126,9 +126,9 @@ fn_script_dir() {
 
     if [[ -L $which_install ]]; then
         # check if installation is Homebrew
-        # if so use script_dir=/opt/homebrew/Cellar/backpack_install/${version}/bin
+        # if so use script_dir=$(brew --prefix)/Cellar/backpack_install/${version}/bin
         if [[ "$which_install" == *"homebrew"* ]]; then
-            script_dir="/opt/homebrew/Cellar/backpack_install/${version}/bin"
+            script_dir="$(brew --prefix)/Cellar/backpack_install/${version}/bin"
         else
             link=$(realpath "${which_install}")
             script_dir=$(dirname "${link}")
