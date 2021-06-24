@@ -237,7 +237,7 @@ fi
 
 check_cmd composer
 if ! (("$(laravel_version)" > 7)); then
-    echo "Lavel version must be greater than 8." >&2
+    echo "Laravel version must be greater than 8." >&2
     exit 1
 fi
 check_composer

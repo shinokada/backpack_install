@@ -67,20 +67,6 @@ function inputChoice() {
     return "${selected}"
 }
 
-myrealpath() {
-    local LINK REALPATH
-    local OURPWD=$PWD
-    cd "$(dirname "$1")" || exit
-    LINK=$(readlink "$(basename "$1")")
-    while [ "$LINK" ]; do
-        cd "$(dirname "$LINK")" || exit
-        LINK=$(readlink "$(basename "$1")")
-    done
-    REALPATH="$PWD/$(basename "$1")"
-    cd "$OURPWD" || exit
-    echo "$REALPATH"
-}
-
 # Usage: options=("one" "two" "three");
 # inputChoice "Choose:" 1 "${options[@]}";
 # choice=$?; echo "${options[$choice]}"
@@ -93,7 +79,7 @@ myrealpath() {
 check_cmd() {
     if [[ ! $(command -v "$1") ]]; then
         bannerColor "It seems like you don't have $1." "red" "*"
-        bannerColor "Please install $1 or add the PATH to .zshrc or .bash_profile." "red" "*"
+        bannerColor "Please install $1. You can try brew insatll $1 for mac users." "red" "*"
         exit 1
     fi
 }
