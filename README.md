@@ -13,6 +13,10 @@ Installs BackupManager, LogManager, Settings, PageManager, PermissionManager, Me
 
 [Medium Article](https://codeburst.io/installing-backpack-for-laravel-modules-with-a-line-of-command-eda01d72639f)
 
+## Requirement
+
+UNIX-lie (Tested on Ubuntu and MacOS.)
+
 ## Installation
 
 ### macOS
